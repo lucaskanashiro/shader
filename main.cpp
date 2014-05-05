@@ -36,6 +36,8 @@ int main(int argc, char* argv[])
   cout<< "TUDO OK!" << endl;
   glUseProgram(program);
   glClearColor(1.0, 1.0, 1.0, 1.0);
+
+  shader.criarVertexArray();
   shader.criarBufferDeVertex();
   shader.criarBufferDeIndex();
 

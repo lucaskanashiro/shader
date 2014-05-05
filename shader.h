@@ -22,6 +22,7 @@ class GerenciadorShader
     void setIndice(vector<unsigned int> indice);
 
     GLuint initShader();
+    void criarVertexArray();
     void criarBufferDeVertex();
     void criarBufferDeIndex();
     void renderizarCena();
@@ -31,7 +32,7 @@ class GerenciadorShader
     char* readShaderSource(const char* shaderFile);
 
     Shader shaders[2];
-    GLuint VBO, IBO;
+    GLuint VBO, IBO, vertexArrayID;
     vector<Vertex> buffer;
     vector<unsigned int> indice;
 };

@@ -113,6 +113,13 @@ GerenciadorShader::initShader()
 }
 
 void
+GerenciadorShader::criarVertexArray()
+{
+  glGenVertexArrays(1, &this->vertexArrayID); 
+  glBindVertexArray(vertexArrayID);
+}
+
+void
 GerenciadorShader::criarBufferDeVertex()
 {
   glGenBuffers(1, &this->VBO);
@@ -133,6 +140,9 @@ GerenciadorShader::renderizarCena()
 {
   glClear(GL_COLOR_BUFFER_BIT);
 
+  glEnableVertexAttribArray(0);
+  glEnableVertexAttribArray(1);
+
   glBindBuffer(GL_ARRAY_BUFFER, this->VBO);
 
   glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex), (const GLvoid*) 0);
@@ -140,12 +150,9 @@ GerenciadorShader::renderizarCena()
 
   glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, this->IBO);
 
-  glEnableVertexAttribArray(0);
-  glEnableVertexAttribArray(1);
-
   glDrawElements(GL_TRIANGLES, this->indice.size()*sizeof(unsigned int), GL_UNSIGNED_INT, (const GLvoid*) 0);
 
-  //glDisableVertexAttribArray(0);
-  //glDisableVertexAttribArray(1);
+  glDisableVertexAttribArray(0);
+  glDisableVertexAttribArray(1);
 }
 
