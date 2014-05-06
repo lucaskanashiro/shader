@@ -22,12 +22,12 @@ class Mesh
     void redimensionar();
     void normalizar();
     void transladar();
+		Vertex calcularNormal(Vertex a, Vertex b, Vertex c);
     vector<Vertex> getVertex();
     vector<unsigned int> getIndice();
 
   private:
 
-    void printArrays();
     double encontrarDeltaX();
     double encontrarDeltaY();
     double encontrarDeltaZ();

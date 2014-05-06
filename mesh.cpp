@@ -64,22 +64,6 @@ Mesh::encontrarDeltaZ()
   return zMax - zMin;
 }
 
-void Mesh::printArrays()
-{
-  for(unsigned int i=0; i<this->vertex.size(); i++)
-  {
-    cout << "VERTEX "<< i << endl;
-    cout << "x: " << vertex[i].position[0] << "\ty: " << vertex[i].position[1] << "\tz: " << vertex[i].position[2] << endl;
-    cout << "r: " << vertex[i].color[0] << "\tg: " << vertex[i].color[1] << "\tb: " << vertex[i].color[2] << "\ta: " << vertex[i].color[3] << endl;
-  }
-
-  cout << endl << "INDICE: " << endl;
-  for(unsigned int i=0; i<this->indice.size(); i++)
-  {
-    cout << indice[i] << endl;
-  }
-}
-
 void
 Mesh::carregarArquivo(string nomeArquivo)
 {
@@ -150,8 +134,6 @@ Mesh::carregarArquivo(string nomeArquivo)
   this->deltaX = this->encontrarDeltaX();
   this->deltaY = this->encontrarDeltaY();
   this->deltaZ = this->encontrarDeltaZ();
-
-  //printArrays();
 }
 
 void
@@ -178,6 +160,17 @@ Mesh::transladar()
     vertex[i].position[1] -= ((this->deltaY/2)+this->yMin);
     vertex[i].position[2] -= ((this->deltaZ/2)+this->zMin);
   }
+}
+
+Vertex
+Mesh::calcularNormal(Vertex a, Vertex b, Vertex c)
+{
+	Vertex u((b.position[0] - a.position[0]), (b.position[1] - a.position[1]), (b.position[2] - a.position[2]));
+	Vertex v((c.position[0] - a.position[0]), (c.position[1] - a.position[1]), (c.position[2] - a.position[2]));
+
+	Vertex normal(((u.position[1] * v.position[2]) - (u.position[2] * v.position[1])), ((u.position[2] * v.position[0]) - (u.position[0] * v.position[2])), ((u.position[0] * v.position[1]) - (u.position[1] * v.position[0])));
+	
+	return normal;
 }
 
 vector<Vertex> Mesh::getVertex() { return this->vertex; }
