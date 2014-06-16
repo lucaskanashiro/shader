@@ -7,6 +7,7 @@
 #include <vector>
 
 #include "vec.h"
+#include "mesh.h"
 
 using namespace std;
 
@@ -27,6 +28,9 @@ class GerenciadorShader
     void criarBufferDeIndex();
     void renderizarCena();
 
+    void addMesh(Mesh mesh);
+    void renderAllMesh();
+
   private:
 
     char* readShaderSource(const char* shaderFile);
@@ -35,6 +39,8 @@ class GerenciadorShader
     GLuint VBO, IBO, vertexArrayID;
     vector<Vertex> buffer;
     vector<unsigned int> indice;
+
+    vector<Mesh> vectorMesh;
 };
 
 #endif

@@ -156,3 +156,23 @@ GerenciadorShader::renderizarCena()
   glDisableVertexAttribArray(1);
 }
 
+void
+GerenciadorShader::addMesh(Mesh mesh)
+{
+  this->vectorMesh.push_back(mesh);
+}
+
+void
+GerenciadorShader::renderAllMesh()
+{
+  for(int i = 0; i < (int)this->vectorMesh.size(); i++)
+  {
+    this->setVertex(vectorMesh[i].getVertex());
+    this->setIndice(vectorMesh[i].getIndice());
+  }
+  this->criarVertexArray();
+  this->criarBufferDeVertex();
+  this->criarBufferDeIndex();
+  this->renderizarCena();
+}
+
