@@ -173,6 +173,15 @@ Mesh::calcularNormal(Vertex a, Vertex b, Vertex c)
 	return normal;
 }
 
+void
+Mesh::draw()
+{
+  glBufferData(GL_ARRAY_BUFFER, this->vertex.size()*sizeof(Vertex), &this->vertex[0], GL_STATIC_DRAW);
+  glBufferData(GL_ELEMENT_ARRAY_BUFFER, this->indice.size()*sizeof(unsigned int), &this->indice[0], GL_STATIC_DRAW);
+  glDrawElements(GL_TRIANGLES, this->indice.size()*sizeof(unsigned int), GL_UNSIGNED_INT, (const GLvoid*) 0);
+
+}
+
 vector<Vertex> Mesh::getVertex() { return this->vertex; }
 vector<unsigned int> Mesh::getIndice() { return this->indice; }
 
