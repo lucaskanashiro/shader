@@ -187,11 +187,56 @@ Mesh::calcularNormal(Vertex a, Vertex b, Vertex c)
 }
 
 void
+Mesh::criarVertexArray()
+{
+  glGenVertexArrays(1, &this->vertexArrayID); 
+  glBindVertexArray(vertexArrayID);
+}
+
+void
+Mesh::criarBufferDeVertex()
+{
+  glGenBuffers(1, &this->VBO);
+  glBindBuffer(GL_ARRAY_BUFFER, this->VBO);
+  glBufferData(GL_ARRAY_BUFFER, this->vertex.size()*sizeof(Vertex), &this->vertex[0], GL_STATIC_DRAW);
+}
+
+void
+Mesh::criarBufferDeIndex()
+{
+  glGenBuffers(1, &this->IBO);
+  glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, this->IBO);
+  glBufferData(GL_ELEMENT_ARRAY_BUFFER, this->indice.size()*sizeof(unsigned int), &this->indice[0], GL_STATIC_DRAW);
+}
+
+void
 Mesh::draw()
 {
-  glBufferData(GL_ARRAY_BUFFER, this->vertex.size()*sizeof(Vertex), &this->vertex[0], GL_STATIC_DRAW);
-  glBufferData(GL_ELEMENT_ARRAY_BUFFER, this->indice.size()*sizeof(unsigned int), &this->indice[0], GL_STATIC_DRAW);
+  this->criarVertexArray();
+  this->criarBufferDeVertex();
+  this->criarBufferDeIndex();
+
+  glEnableVertexAttribArray(0);
+  glEnableVertexAttribArray(1);
+
+  glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex), (const GLvoid*) 0);
+  glVertexAttribPointer(1, 4, GL_INT, GL_TRUE, sizeof(Vertex), (const GLvoid*) 3);
+
   glDrawElements(GL_TRIANGLES, this->indice.size()*sizeof(unsigned int), GL_UNSIGNED_INT, (const GLvoid*) 0);
+
+  glDisableVertexAttribArray(0);
+  glDisableVertexAttribArray(1);
+
+  this->freeBuffers();
+}
+
+void
+Mesh::freeBuffers()
+{
+  glDeleteBuffers(1, &this->VBO);
+  glDeleteBuffers(1, &this->IBO);
+  this->VBO = 0;
+  this->IBO = 0;
 }
 
 vector<Vertex> Mesh::getVertex() { return this->vertex; }

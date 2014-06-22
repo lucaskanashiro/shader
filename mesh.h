@@ -32,12 +32,18 @@ class Mesh
 	float getZMax();
     void setZMax(float z);		    
 
+    void criarVertexArray();
+    void criarBufferDeVertex();
+    void criarBufferDeIndex();
   private:
 
     float encontrarDeltaX();
     float encontrarDeltaY();
     float encontrarDeltaZ();
 
+    void freeBuffers();
+
+    GLuint VBO, IBO, vertexArrayID;
     float deltaX, deltaY, deltaZ, xMin, yMin, zMin;
     float zMax;
     int qtdPontos, qtdArestas, qtdTextura;

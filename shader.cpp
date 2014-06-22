@@ -118,43 +118,12 @@ GerenciadorShader::initShader()
   return program;
 }
 
-void
-GerenciadorShader::criarVertexArray()
-{
-  glGenVertexArrays(1, &this->vertexArrayID); 
-  glBindVertexArray(vertexArrayID);
-}
-
-void
-GerenciadorShader::criarBufferDeVertex()
-{
-  glGenBuffers(1, &this->VBO);
-  glBindBuffer(GL_ARRAY_BUFFER, this->VBO);
-  glBufferData(GL_ARRAY_BUFFER, this->buffer.size()*sizeof(Vertex), &this->buffer[0], GL_STATIC_DRAW);
-}
-
-void
-GerenciadorShader::criarBufferDeIndex()
-{
-  glGenBuffers(1, &this->IBO);
-  glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, this->IBO);
-  glBufferData(GL_ELEMENT_ARRAY_BUFFER, this->indice.size()*sizeof(unsigned int), &this->indice[0], GL_STATIC_DRAW);
-}
 
 void
 GerenciadorShader::renderizarCena()
 {
   glClear(GL_COLOR_BUFFER_BIT);
 
-  glEnableVertexAttribArray(0);
-  glEnableVertexAttribArray(1);
-
-  glGenBuffers(1, &this->VBO);
-  glBindBuffer(GL_ARRAY_BUFFER, this->VBO);
-  glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, this->IBO);
-
-  glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex), (const GLvoid*) 0);
-  glVertexAttribPointer(1, 4, GL_INT, GL_TRUE, sizeof(Vertex), (const GLvoid*) 3);
 
   for(int i = 0; i < (int)this->vectorMesh.size(); i++)
   {
@@ -163,8 +132,6 @@ GerenciadorShader::renderizarCena()
 
   // glDrawElements(GL_TRIANGLES, this->indice.size()*sizeof(unsigned int), GL_UNSIGNED_INT, (const GLvoid*) 0);
 
-  glDisableVertexAttribArray(0);
-  glDisableVertexAttribArray(1);
 }
 
 void
@@ -173,19 +140,3 @@ GerenciadorShader::addMesh(Mesh mesh)
   this->vectorMesh.push_back(mesh);
   sort(this->vectorMesh.begin(), this->vectorMesh.end(), compareMesh);
 }
-
-void
-GerenciadorShader::renderAllMesh()
-{
-  // for(int i = 0; i < (int)this->vectorMesh.size(); i++)
-  // {
-  //   this->setVertex(vectorMesh[i].getVertex());
-  //   this->setIndice(vectorMesh[i].getIndice());
-  //   this->criarVertexArray();
-    // this->criarBufferDeVertex();
-    // this->criarBufferDeIndex();
-  // }
-  this->criarVertexArray();
-  this->renderizarCena();
-}
-

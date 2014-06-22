@@ -29,7 +29,6 @@ class GerenciadorShader
     void renderizarCena();
 
     void addMesh(Mesh mesh);
-    void renderAllMesh();
 
   private:
 

@@ -39,13 +39,29 @@ int main(int argc, char* argv[])
   glUseProgram(program);
   glClearColor(1.0, 1.0, 1.0, 1.0);
 
-  // mesh[0].setZMax(mesh[1].getZMax() + 0.9);
+  mesh[0].setZMax(mesh[1].getZMax() + 0.9);
 
   shader.addMesh(mesh[0]);
   shader.addMesh(mesh[1]);
-  shader.renderAllMesh();
 
-  gerenciador.displayRender();
+  SDL_Event sdlEvent;
+  bool finish;
+
+  finish = false;
+  while(!finish)
+  {
+    while(SDL_PollEvent(&sdlEvent))
+    {
+      if(sdlEvent.type == SDL_QUIT)
+      {
+        finish = true;
+        break;
+      }
+    }
+    shader.renderizarCena();
+    gerenciador.displayRender();
+  }
+
   gerenciador.delay(2000);
 
   return 0;
