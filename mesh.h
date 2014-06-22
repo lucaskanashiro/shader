@@ -27,7 +27,7 @@ class Mesh
     vector<Vertex> getVertex();
     vector<unsigned int> getIndice();
 
-    void draw();
+    void draw(GLuint program);
 
 	float getZMax();
     void setZMax(float z);		    
@@ -35,6 +35,15 @@ class Mesh
     void criarVertexArray();
     void criarBufferDeVertex();
     void criarBufferDeIndex();
+
+    void resize(float scalar);
+    void resizePoints(Vertex &head, Vertex &tail, float scalar);
+
+    void rotateY(float angleY);
+    void rotateX(float angleX);
+    void rotateZ(float angleZ);
+    void incPosition(float x, float y, float z);
+
   private:
 
     float encontrarDeltaX();
@@ -49,6 +58,7 @@ class Mesh
     int qtdPontos, qtdArestas, qtdTextura;
     vector<Vertex> vertex;
     vector<unsigned int> indice;
+    GLfloat angleX, angleY, angleZ;
 };
 
 #endif

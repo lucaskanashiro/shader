@@ -3,9 +3,9 @@
 #include <algorithm>
 using namespace std;
 
-bool compareMesh(Mesh a, Mesh b)
+bool compareMesh(Mesh *a, Mesh *b)
 {
-  return a.getZMax() < b.getZMax();
+  return a->getZMax() < b->getZMax();
 }
 
 GerenciadorShader::GerenciadorShader(){}
@@ -120,22 +120,19 @@ GerenciadorShader::initShader()
 
 
 void
-GerenciadorShader::renderizarCena()
+GerenciadorShader::renderizarCena(GLuint program)
 {
   glClear(GL_COLOR_BUFFER_BIT);
 
 
   for(int i = 0; i < (int)this->vectorMesh.size(); i++)
   {
-    this->vectorMesh[i].draw();
+    this->vectorMesh[i]->draw(program);
   }
-
-  // glDrawElements(GL_TRIANGLES, this->indice.size()*sizeof(unsigned int), GL_UNSIGNED_INT, (const GLvoid*) 0);
-
 }
 
 void
-GerenciadorShader::addMesh(Mesh mesh)
+GerenciadorShader::addMesh(Mesh *mesh)
 {
   this->vectorMesh.push_back(mesh);
   sort(this->vectorMesh.begin(), this->vectorMesh.end(), compareMesh);

@@ -23,12 +23,9 @@ class GerenciadorShader
     void setIndice(vector<unsigned int> indice);
 
     GLuint initShader();
-    void criarVertexArray();
-    void criarBufferDeVertex();
-    void criarBufferDeIndex();
-    void renderizarCena();
+    void renderizarCena(GLuint program);
 
-    void addMesh(Mesh mesh);
+    void addMesh(Mesh *mesh);
 
   private:
 
@@ -39,7 +36,7 @@ class GerenciadorShader
     vector<Vertex> buffer;
     vector<unsigned int> indice;
 
-    vector<Mesh> vectorMesh;
+    vector<Mesh *> vectorMesh;
 };
 
 #endif
