@@ -1,6 +1,12 @@
 #include "shader.h"
 #include <iostream>
+#include <algorithm>
 using namespace std;
+
+bool compareMesh(Mesh a, Mesh b)
+{
+  return a.getZMax() < b.getZMax();
+}
 
 GerenciadorShader::GerenciadorShader(){}
 
@@ -165,6 +171,7 @@ void
 GerenciadorShader::addMesh(Mesh mesh)
 {
   this->vectorMesh.push_back(mesh);
+  sort(this->vectorMesh.begin(), this->vectorMesh.end(), compareMesh);
 }
 
 void

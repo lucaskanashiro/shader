@@ -29,13 +29,17 @@ class Mesh
 
     void draw();
 
+	float getZMax();
+    void setZMax(float z);		    
+
   private:
 
-    double encontrarDeltaX();
-    double encontrarDeltaY();
-    double encontrarDeltaZ();
+    float encontrarDeltaX();
+    float encontrarDeltaY();
+    float encontrarDeltaZ();
 
-    double deltaX, deltaY, deltaZ, xMin, yMin, zMin;
+    float deltaX, deltaY, deltaZ, xMin, yMin, zMin;
+    float zMax;
     int qtdPontos, qtdArestas, qtdTextura;
     vector<Vertex> vertex;
     vector<unsigned int> indice;

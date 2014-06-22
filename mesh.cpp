@@ -4,11 +4,11 @@ Mesh::Mesh(){}
 
 Mesh::~Mesh(){}
 
-double
+float
 Mesh::encontrarDeltaX()
 {
-  double xMax = vertex[0].position[0];
-  double xMin = vertex[0].position[0];
+  float xMax = vertex[0].position[0];
+  float xMin = vertex[0].position[0];
 
   for(unsigned int i=1; i<this->vertex.size(); i++)
   {
@@ -24,11 +24,11 @@ Mesh::encontrarDeltaX()
   return xMax - xMin;
 }
 
-double
+float
 Mesh::encontrarDeltaY()
 {
-  double yMax = vertex[0].position[1];
-  double yMin = vertex[0].position[1];
+  float yMax = vertex[0].position[1];
+  float yMin = vertex[0].position[1];
 
   for(unsigned int i=1; i<this->vertex.size(); i++)
   {
@@ -44,11 +44,11 @@ Mesh::encontrarDeltaY()
   return yMax - yMin;
 }
 
-double
+float
 Mesh::encontrarDeltaZ()
 {
-  double zMax = vertex[0].position[2];
-  double zMin = vertex[0].position[2];
+  float zMax = vertex[0].position[2];
+  float zMin = vertex[0].position[2];
 
   for(unsigned int i=1; i<this->vertex.size(); i++)
   {
@@ -60,8 +60,21 @@ Mesh::encontrarDeltaZ()
   }
 
   this->zMin = zMin;
+  this->zMax = zMax;
 
   return zMax - zMin;
+}
+
+float
+Mesh::getZMax()
+{
+  return this->zMax;
+}
+
+void
+Mesh::setZMax(float z)
+{
+  this->zMax = z;
 }
 
 void
@@ -179,7 +192,6 @@ Mesh::draw()
   glBufferData(GL_ARRAY_BUFFER, this->vertex.size()*sizeof(Vertex), &this->vertex[0], GL_STATIC_DRAW);
   glBufferData(GL_ELEMENT_ARRAY_BUFFER, this->indice.size()*sizeof(unsigned int), &this->indice[0], GL_STATIC_DRAW);
   glDrawElements(GL_TRIANGLES, this->indice.size()*sizeof(unsigned int), GL_UNSIGNED_INT, (const GLvoid*) 0);
-
 }
 
 vector<Vertex> Mesh::getVertex() { return this->vertex; }
