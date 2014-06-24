@@ -6,24 +6,28 @@
 const float VELOCITY_MOVE = 0.05;
 const float VELOCITY_ANGLE = 5;
 
-int main(int, char* argv[])
+int main(int argc, char* argv[])
 {
 
   GerenciadorGrafico gerenciador;
-  Mesh *mesh = new Mesh();
+
+  vector<Mesh *> vectorMesh;
+  for(int i = 1; i < argc; i++)
+  {
+    Mesh *mesh = new Mesh();
+    mesh->carregarArquivo(argv[i]);
+    mesh->redimensionar();
+    mesh->transladar();
+
+    vectorMesh.push_back(mesh);
+  }
+  
 
   gerenciador.setViewPort(800, 600);
   gerenciador.iniciarRender();
 
   glewInit();
-
-  cout << "mesh[0]: " << mesh->getZMax() << endl;
-
-  mesh->carregarArquivo(argv[1]);
-  mesh->redimensionar();
-  mesh->transladar();
-
-  cout << "mesh[0]: " << mesh->getZMax() << endl;
+  
 
   GerenciadorShader shader;
 
@@ -37,17 +41,21 @@ int main(int, char* argv[])
 
   // mesh[0].setZMax(mesh[1].getZMax() + 0.9);
 
-  shader.addMesh(mesh);          
+  for(int i = 0; i < (int)vectorMesh.size(); i++)
+  {
+    shader.addMesh(vectorMesh[i]);
+  }
 
   float velocityX = 0, velocityY = 0, velocityZ = 0;
   float velocityAngleY = 0, velocityAngleX = 0;
   float velocityAngleZ = 0;
   SDL_Event sdlEvent;
   bool finish;
+  int indice = 0;
 
   finish = false;
 
-  mesh->rotateY(0.01);
+  // mesh->rotateY(0.01);
 
   while(!finish)
   {
@@ -59,13 +67,31 @@ int main(int, char* argv[])
         break;
       }
 
+      if(sdlEvent.key.keysym.sym == SDLK_c)
+      {
+        if(sdlEvent.key.state == SDL_PRESSED)
+        {
+          indice++;
+          indice = indice % vectorMesh.size();
+        }
+      }
+
+      if(sdlEvent.key.keysym.sym == SDLK_x)
+      {
+        if(sdlEvent.key.state == SDL_PRESSED)
+        {
+          indice--;
+          indice = indice % vectorMesh.size();
+        }
+      }
+
       if(sdlEvent.key.keysym.sym == SDLK_PAGEUP)
       {
         if(sdlEvent.key.state == SDL_PRESSED)
         {
-          cout << endl;
-          cout << "mesh: " << mesh->getZMax() << endl;
-          mesh->resize(1.2);
+          // cout << endl;
+          // cout << "vectorMesh: " << vectorMesh->getZMax() << endl;
+          vectorMesh[indice]->resize(1.2);
         }
       }
 
@@ -73,9 +99,9 @@ int main(int, char* argv[])
       {
         if(sdlEvent.key.state == SDL_PRESSED)
         {
-          cout << endl;
-          cout << "mesh: " << mesh->getZMax() << endl;
-          mesh->resize(0.83);
+          // cout << endl;
+          // cout << "vectorMesh: " << vectorMesh->getZMax() << endl;
+          vectorMesh[indice]->resize(0.83);
         }
       }
 
@@ -176,16 +202,17 @@ int main(int, char* argv[])
       }
 
     }
-    mesh->rotateY(velocityAngleY);
-    mesh->rotateX(velocityAngleX);
-    mesh->rotateZ(velocityAngleZ);
-    mesh->incPosition(velocityX, velocityY, velocityZ);
+    vectorMesh[indice]->rotateY(velocityAngleY);
+    vectorMesh[indice]->rotateX(velocityAngleX);
+    vectorMesh[indice]->rotateZ(velocityAngleZ);
+    vectorMesh[indice]->incPosition(velocityX, velocityY, velocityZ);
     shader.renderizarCena(program);
     gerenciador.displayRender();
     gerenciador.delay(36);
   }
 
-  delete mesh;
+
+  // delete mesh;
 
   return 0;
 }

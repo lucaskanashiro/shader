@@ -124,7 +124,7 @@ GerenciadorShader::renderizarCena(GLuint program)
 {
   glClear(GL_COLOR_BUFFER_BIT);
 
-
+  sort(this->vectorMesh.begin(), this->vectorMesh.end(), compareMesh);
   for(int i = 0; i < (int)this->vectorMesh.size(); i++)
   {
     this->vectorMesh[i]->draw(program);
@@ -135,5 +135,4 @@ void
 GerenciadorShader::addMesh(Mesh *mesh)
 {
   this->vectorMesh.push_back(mesh);
-  sort(this->vectorMesh.begin(), this->vectorMesh.end(), compareMesh);
 }
