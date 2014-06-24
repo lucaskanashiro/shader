@@ -55,6 +55,7 @@ class Mesh
     GLuint VBO, IBO, vertexArrayID;
     float deltaX, deltaY, deltaZ, xMin, yMin, zMin;
     float zMax;
+    float xMid, yMid, zMid;
     int qtdPontos, qtdArestas, qtdTextura;
     vector<Vertex> vertex;
     vector<unsigned int> indice;

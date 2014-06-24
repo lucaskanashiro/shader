@@ -27,6 +27,8 @@ Mesh::encontrarDeltaX()
 
   this->xMin = xMin;
 
+  this->xMid = (xMax + xMin) / 2;
+
   return xMax - xMin;
 }
 
@@ -46,6 +48,8 @@ Mesh::encontrarDeltaY()
   }
 
   this->yMin = yMin;
+
+  this->yMid = (yMax + yMin) / 2;  
 
   return yMax - yMin;
 }
@@ -67,6 +71,8 @@ Mesh::encontrarDeltaZ()
 
   this->zMin = zMin;
   this->zMax = zMax;
+
+  this->zMid = (zMax + zMin) / 2;
 
   return zMax - zMin;
 }
@@ -235,6 +241,11 @@ Mesh::draw(GLuint program)
 
     glUniformMatrix4fv(gWorldLocation, 1, GL_TRUE, (const GLfloat*)t.GetTrans());
 */
+
+  GLuint myUniformLocationMidX = glGetUniformLocation(program, "midX");
+  GLuint myUniformLocationMidY = glGetUniformLocation(program, "midY");
+  GLuint myUniformLocationMidZ = glGetUniformLocation(program, "midZ");
+
   GLuint myUniformLocationAngleY = glGetUniformLocation(program, "angleY");
   GLuint myUniformLocationAngleX = glGetUniformLocation(program, "angleX");
   GLuint myUniformLocationAngleZ = glGetUniformLocation(program, "angleZ");
@@ -244,6 +255,11 @@ Mesh::draw(GLuint program)
 
   glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex), (const GLvoid*) 0);
   glVertexAttribPointer(1, 4, GL_INT, GL_TRUE, sizeof(Vertex), (const GLvoid*) 3);
+  
+  glUniform1f(myUniformLocationMidX, this->xMid);
+  glUniform1f(myUniformLocationMidY, this->yMid);
+  glUniform1f(myUniformLocationMidZ, this->zMid);
+
   glUniform1f(myUniformLocationAngleY, this->angleY);
   glUniform1f(myUniformLocationAngleX, this->angleX);
   glUniform1f(myUniformLocationAngleZ, this->angleZ);
@@ -254,6 +270,10 @@ Mesh::draw(GLuint program)
   glDisableVertexAttribArray(1);
 
   this->freeBuffers();
+
+  this->deltaX = this->encontrarDeltaX();
+  this->deltaY = this->encontrarDeltaY();
+  this->deltaZ = this->encontrarDeltaZ();
 }
 
 void
@@ -405,4 +425,8 @@ Mesh::incPosition(float x, float y, float z)
     vertex[i].position[1] += vector3d.position[1];
     vertex[i].position[2] += vector3d.position[2];
   }
+
+  this->deltaX = this->encontrarDeltaX();
+  this->deltaY = this->encontrarDeltaY();
+  this->deltaZ = this->encontrarDeltaZ();
 }
