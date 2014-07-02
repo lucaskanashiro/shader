@@ -101,58 +101,59 @@ Mesh::carregarArquivo(string nomeArquivo)
   }
 
   string tipo;
-  getline(arquivo, tipo);
-  
-  if(tipo.find("OFF") == string::npos)
-  {
-    cout << "Tipo de arquivo invalido!!!" << endl;
-    exit(-1);
-  }
-
   string line;
-  getline(arquivo, line);
+  string trash;
 
-  stringstream ss (line);
-  ss >> this->qtdPontos >> this->qtdArestas >> this->qtdTextura;
+  float x, y, z;
 
-  for(int i=0; i<this->qtdPontos; i++)
+  while(getline(arquivo, line))
   {
-    string linha;
+    stringstream stream(line);
 
-    getline(arquivo, linha);
-    stringstream buffer(linha);
-
-    float x, y, z;
-    int r, g, b, alpha;
-
-    if(tipo.find("COFF") != string::npos)
+    if(line.substr(0, 6) == "mtllib")
     {
-      buffer >> x >> y >> z >> r >> g >> b >> alpha;
-      this->vertex.push_back(Vertex(x, y, z, r, g, b, alpha));
-    }
-    else if(tipo.find("OFF") != string::npos)
-    {
-      buffer >> x >> y >> z;
-      this->vertex.push_back(Vertex(x, y, z, 127, 127, 127, 0));
+      stream >> trash >> this->fileMtl;
+      cout << "fileMtl: " << this->fileMtl << endl;
     }
 
+    else if(line.substr(0, 2) == "v ")
+    {
+      stream >> trash >> x >> y >> z;
+      this->vertex.push_back(Vertex(x, y, z));
+    }
+
+    else if(line.substr(0,2) == "vn")
+    {
+      stream >> trash >> x >> y >> z;
+      this->normal.push_back(Vertex(x, y, z));
+    }
+
+    else if(line.substr(0,2) == "vt")
+    {
+      stream >> trash >> x >> y >> z;
+      this->texture.push_back(Vertex(x, y, z));
+    }
+
+    else if(line.substr(0,2) == "f ")
+    {
+      unsigned int v, n, t;
+      char c_trash;
+
+      stream >> trash;
+      for(int i = 0; i < 3; i++)
+      {
+        stream >> v >> c_trash >> n >> c_trash >> t;
+        this->vertexIndex.push_back(v);
+        this->normalIndex.push_back(n);
+        this->textureIndex.push_back(t);
+      }
+    }
   }
 
-  for(int j=0; j<this->qtdArestas; j++)
+  for(unsigned int i=0; i<this->vertexIndex.size(); i++)
   {
-    string linha;
-
-    getline(arquivo, linha);
-    stringstream buffer(linha);
-
-    unsigned int valor, indice1, indice2, indice3;
-
-    buffer >> valor >> indice1 >> indice2 >> indice3;
-
-    this->indice.push_back(indice1);
-    this->indice.push_back(indice2);
-    this->indice.push_back(indice3);
-  } 
+    cout << this->vertexIndex[i] << endl;
+  }
 
   arquivo.close();
 
@@ -164,13 +165,6 @@ Mesh::carregarArquivo(string nomeArquivo)
 void
 Mesh::redimensionar()
 {
-  // for(unsigned int i=0; i<this->vertex.size(); i++)
-  // {
-  //   vertex[i].position[0] /= this->deltaX;
-  //   vertex[i].position[1] /= this->deltaY;
-  //   vertex[i].position[2] /= this->deltaZ;
-  // }
-
   this->resize(1/this->deltaY);
 
   this->deltaX = this->encontrarDeltaX();
@@ -187,17 +181,6 @@ Mesh::transladar()
     vertex[i].position[1] -= ((this->deltaY/2)+this->yMin);
     vertex[i].position[2] -= ((this->deltaZ/2)+this->zMin);
   }
-}
-
-Vertex
-Mesh::calcularNormal(Vertex a, Vertex b, Vertex c)
-{
-	Vertex u((b.position[0] - a.position[0]), (b.position[1] - a.position[1]), (b.position[2] - a.position[2]));
-	Vertex v((c.position[0] - a.position[0]), (c.position[1] - a.position[1]), (c.position[2] - a.position[2]));
-
-	Vertex normal(((u.position[1] * v.position[2]) - (u.position[2] * v.position[1])), ((u.position[2] * v.position[0]) - (u.position[0] * v.position[2])), ((u.position[0] * v.position[1]) - (u.position[1] * v.position[0])));
-	
-	return normal;
 }
 
 void
@@ -220,7 +203,7 @@ Mesh::criarBufferDeIndex()
 {
   glGenBuffers(1, &this->IBO);
   glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, this->IBO);
-  glBufferData(GL_ELEMENT_ARRAY_BUFFER, this->indice.size()*sizeof(unsigned int), &this->indice[0], GL_STATIC_DRAW);
+  glBufferData(GL_ELEMENT_ARRAY_BUFFER, this->vertexIndex.size()*sizeof(unsigned int), &this->vertexIndex[0], GL_STATIC_DRAW);
 }
 
 void
@@ -229,18 +212,6 @@ Mesh::draw(GLuint program)
   this->criarVertexArray();
   this->criarBufferDeVertex();
   this->criarBufferDeIndex();
-
-  // scale += 0.001f;
-  /*GLuint gWorldLocation = glGetUniformLocation(program, "gWorld");
-
-
-  Transformation t;
-    t.Scale(sinf(this->scale * 0.1f), sinf(this->scale * 0.1f), sinf(this->scale * 0.1f));
-    t.WorldPos(sinf(this->scale), 0.0f, 0.0f);
-    t.Rotate(sinf(this->scale) * 90.0f, sinf(this->scale) * 90.0f, sinf(this->scale) * 90.0f);
-
-    glUniformMatrix4fv(gWorldLocation, 1, GL_TRUE, (const GLfloat*)t.GetTrans());
-*/
 
   GLuint myUniformLocationMidX = glGetUniformLocation(program, "midX");
   GLuint myUniformLocationMidY = glGetUniformLocation(program, "midY");
@@ -264,7 +235,7 @@ Mesh::draw(GLuint program)
   glUniform1f(myUniformLocationAngleX, this->angleX);
   glUniform1f(myUniformLocationAngleZ, this->angleZ);
 
-  glDrawElements(GL_TRIANGLES, this->indice.size()*sizeof(unsigned int), GL_UNSIGNED_INT, (const GLvoid*) 0);
+  glDrawElements(GL_TRIANGLES, this->vertexIndex.size()*sizeof(unsigned int), GL_UNSIGNED_INT, (const GLvoid*) 0);
 
   glDisableVertexAttribArray(0);
   glDisableVertexAttribArray(1);
@@ -286,10 +257,7 @@ Mesh::freeBuffers()
 }
 
 vector<Vertex> Mesh::getVertex() { return this->vertex; }
-vector<unsigned int> Mesh::getIndice() { return this->indice; }
-
-
-
+vector<unsigned int> Mesh::getIndice() { return this->vertexIndex; }
 
 void
 Mesh::resize(float scalar)

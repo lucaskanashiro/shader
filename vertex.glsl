@@ -11,17 +11,30 @@ uniform float angleX;
 uniform float angleY;
 uniform float angleZ;
 
+float rad_angle_x;
+float rad_angle_y;
+float rad_angle_z;
+
 out vec4 color;
+
+vec4 rotate(vec4 a);
 
 void main()
 {
   float PI = 3.14159265358979323846264;
-  float rad_angle_x = angleX*PI/180.0;
-  float rad_angle_y = angleY*PI/180.0;
-  float rad_angle_z = angleZ*PI/180.0;
+  rad_angle_x = angleX*PI/180.0;
+  rad_angle_y = angleY*PI/180.0;
+  rad_angle_z = angleZ*PI/180.0;
 
   vec4 a = gl_Vertex;
+  vec4 d = rotate(a);
 
+  gl_Position = gl_ModelViewProjectionMatrix*d;
+  color = vColor;
+}
+
+vec4 rotate(vec4 a)
+{
   vec4 b = a;
   b.y = (a.y - midY) * cos(rad_angle_x) - (a.z - midZ) * sin(rad_angle_x) + midY;
   b.z = (a.z - midZ) * cos(rad_angle_x) + (a.y - midY) * sin(rad_angle_x) + midZ;
@@ -34,7 +47,5 @@ void main()
   d.x = (c.x - midX) * cos(rad_angle_z) - (c.y - midY) * sin(rad_angle_z) + midX;
   d.y = (c.y - midY) * cos(rad_angle_z) + (c.x - midX) * sin(rad_angle_z) + midY;
 
-  gl_Position = gl_ModelViewProjectionMatrix*d;
-  color = vColor;
+  return d;
 }
-

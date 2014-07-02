@@ -56,10 +56,15 @@ class Mesh
     float deltaX, deltaY, deltaZ, xMin, yMin, zMin;
     float zMax;
     float xMid, yMid, zMid;
-    int qtdPontos, qtdArestas, qtdTextura;
     vector<Vertex> vertex;
-    vector<unsigned int> indice;
+    vector<Vertex> normal;
+    vector<Vertex> texture;
+    vector<unsigned int> vertexIndex;
+    vector<unsigned int> normalIndex;
+    vector<unsigned int> textureIndex;
     GLfloat angleX, angleY, angleZ;
+
+    string fileMtl;
 };
 
 #endif

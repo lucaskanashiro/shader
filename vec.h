@@ -23,6 +23,21 @@ struct Vertex
 
 };
 
+struct Face
+{
+  int indice[3][3];
+
+  Face(){};
+
+  void setIndice(int i, int indiceVertice, int indiceNormal, int indiceTexture)
+  {
+    indice[i][0] = indiceVertice;
+    indice[i][1] = indiceNormal;
+    indice[i][2] = indiceTexture;
+  }
+  
+};
+
 struct Shader
 {
   const char* filename;
