@@ -4,6 +4,10 @@
 #include "shader.h"
 #include "camera.h"
 
+#include <Magick++.h>
+
+using namespace Magick;
+
 const float VELOCITY_MOVE = 0.05;
 const float VELOCITY_ANGLE = 5;
 
@@ -30,7 +34,7 @@ void (*keyboardFunction)();
 
 int main(int argc, char* argv[])
 {
-
+  InitializeMagick(*argv);
   GerenciadorGrafico gerenciador;
 
   
@@ -76,7 +80,7 @@ int main(int argc, char* argv[])
   // keyboardFunction = moveObjects;
   keyboardFunction = moveCamera;
 
-  //glEnable(GL_DEPTH_TEST);
+  // glEnable(GL_DEPTH_TEST);
 
   while(!finish)
   {

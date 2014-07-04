@@ -7,10 +7,12 @@
 #include <iostream>
 #include <sstream>
 #include <stdlib.h>
+#include <Magick++.h>
 
 #include "vec.h"
 
 using namespace std;
+using namespace Magick;
 
 class Mesh
 {
@@ -36,6 +38,8 @@ class Mesh
     void criarBufferDeVertex();
     void criarBufferDeIndex();
 
+    void criarBufferTexture();
+
     void resize(float scalar);
     void resizePoints(Vertex &head, Vertex &tail, float scalar);
 
@@ -46,13 +50,18 @@ class Mesh
 
   private:
 
+    string PATH;
+
+    void carregarMaterial(string nomeArquivo);
+    vector< MyColorRGB > getColorRGB(string nomeArquivo);
+
     float encontrarDeltaX();
     float encontrarDeltaY();
     float encontrarDeltaZ();
 
     void freeBuffers();
 
-    GLuint VBO, IBO, vertexArrayID;
+    GLuint VBO, IBO, vertexArrayID, textureArrayID;
     float deltaX, deltaY, deltaZ, xMin, yMin, zMin;
     float zMax;
     float xMid, yMid, zMid;
@@ -65,6 +74,7 @@ class Mesh
     GLfloat angleX, angleY, angleZ;
 
     string fileMtl;
+    vector<Material> material;
 };
 
 #endif

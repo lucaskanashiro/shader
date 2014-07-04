@@ -3,13 +3,17 @@
 
 #include <GL/glew.h>
 #include <GL/gl.h>
+#include <string>
+#include <vector>
+
+using namespace std;
 
 struct Vertex
 {
   float position[3];
   int color[4];
 
-  Vertex(float x=0, float y=0, float z=0, int r=0, int g=0, int b=0, int a=0)
+  Vertex(float x=0, float y=0, float z=0, int r=255, int g=255, int b=255, int a=255)
   {
     position[0] = x;
     position[1] = y;
@@ -36,6 +40,31 @@ struct Face
     indice[i][2] = indiceTexture;
   }
   
+};
+
+struct MyColorRGB {
+  int red, green, blue;
+
+  MyColorRGB(int _red = 0, int _green = 0, int _blue = 0)
+  {
+    red = _red;
+    green = _green;
+    blue = _blue;
+  }
+};
+
+struct Material
+{
+  int illum;
+  string name;
+  string fileName;
+  GLuint textureID;
+  float ns, ni, d, tr, tf[3];
+  float ka[3], kd[3], ks[3], ke[3];
+
+  vector<MyColorRGB> color;
+
+  Material() {};
 };
 
 struct Shader

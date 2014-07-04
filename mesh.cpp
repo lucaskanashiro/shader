@@ -1,11 +1,15 @@
 #include "mesh.h"
 #include <cmath>
 
+using namespace Magick;
+
 Mesh::Mesh()
 {
   this->angleX = 0.0f;
   this->angleY = 0.0f;
   this->angleZ = 0.0f;
+
+  this->PATH = "/home/luciano/Downloads/gun8/";
 }
 
 Mesh::~Mesh(){}
@@ -113,13 +117,12 @@ Mesh::carregarArquivo(string nomeArquivo)
     if(line.substr(0, 6) == "mtllib")
     {
       stream >> trash >> this->fileMtl;
-      cout << "fileMtl: " << this->fileMtl << endl;
     }
 
     else if(line.substr(0, 2) == "v ")
     {
       stream >> trash >> x >> y >> z;
-      this->vertex.push_back(Vertex(x, y, z));
+      this->vertex.push_back(Vertex(x, y, z, 100, 100, 100, 100));
     }
 
     else if(line.substr(0,2) == "vn")
@@ -150,16 +153,155 @@ Mesh::carregarArquivo(string nomeArquivo)
     }
   }
 
-  for(unsigned int i=0; i<this->vertexIndex.size(); i++)
-  {
-    cout << this->vertexIndex[i] << endl;
-  }
+  // for(unsigned int i=0; i<this->vertexIndex.size(); i++)
+  // {
+  //   cout << this->vertexIndex[i] << endl;
+  // }
 
   arquivo.close();
+
+  carregarMaterial(this->fileMtl);
 
   this->deltaX = this->encontrarDeltaX();
   this->deltaY = this->encontrarDeltaY();
   this->deltaZ = this->encontrarDeltaZ();
+}
+
+void
+Mesh::carregarMaterial(string nomeArquivo)
+{
+  string nomeCompletoArquivo = this->PATH + nomeArquivo;
+  ifstream arquivo(nomeCompletoArquivo.c_str());
+
+  if(!arquivo.is_open())
+  {
+    cout << "Não foi possível abrir o aquivo!!!" << endl;
+    exit(-1);
+  }
+
+  string tipo;
+  string line;
+  string trash;
+
+  // float x, y, z;
+
+  cout << "1 --" << endl;
+
+  this->material = vector<Material>();
+
+  cout << "2 --" << endl;
+
+  while(getline(arquivo, line))
+  {
+    stringstream stream(line);
+
+
+    if(line.substr(0, 6) == "newmtl")
+    {
+      this->material.push_back(Material());
+      stream >> trash >> this->material.back().name;
+      cout << "this->material.back().name: " << this->material.back().name << endl;
+    }
+    else if(line.substr(0, 2) == "Ns")
+    {
+      stream >> trash >> this->material.back().ns;
+    }
+    else if(line.substr(0, 2) == "Ni")
+    {
+      stream >> trash >> this->material.back().ni;
+    }
+    else if(line.substr(0, 2) == "d ")
+    {
+      stream >> trash >> this->material.back().d;
+    }
+    else if(line.substr(0, 2) == "Tr")
+    {
+      stream >> trash >> this->material.back().tr;
+    }
+    else if(line.substr(0, 2) == "Tf")
+    {
+      stream >> trash >> this->material.back().tf[0];
+      stream >> this->material.back().tf[1];
+      stream >> this->material.back().tf[2];
+    }
+    else if(line.substr(0, 5) == "illum")
+    {
+      stream >> trash >> this->material.back().illum;
+    }
+    else if(line.substr(0, 2) == "Ka")
+    {
+      stream >> trash >> this->material.back().ka[0];
+      stream >> this->material.back().ka[1];
+      stream >> this->material.back().ka[2];
+    }
+    else if(line.substr(0, 2) == "Kd")
+    {
+      stream >> trash >> this->material.back().kd[0];
+      stream >> this->material.back().kd[1];
+      stream >> this->material.back().kd[2];
+    }
+    else if(line.substr(0, 2) == "Ks")
+    {
+      stream >> trash >> this->material.back().ks[0];
+      stream >> this->material.back().ks[1];
+      stream >> this->material.back().ks[2];
+    }
+    else if(line.substr(0, 2) == "Ke")
+    {
+      stream >> trash >> this->material.back().ke[0];
+      stream >> this->material.back().ke[1];
+      stream >> this->material.back().ke[2];
+    }
+    else if(line.substr(0, 6) == "map_Kd")
+    {
+      stream >> trash >> this->material.back().fileName;
+
+      this->material.back().color = getColorRGB(this->material.back().fileName);
+    }
+
+  }
+
+  cout << "3 --" << endl;
+
+  arquivo.close();
+  cout << "arquivo.close()" << endl;
+
+  this->deltaX = this->encontrarDeltaX();
+  this->deltaY = this->encontrarDeltaY();
+  this->deltaZ = this->encontrarDeltaZ();
+}
+
+vector<MyColorRGB>
+Mesh::getColorRGB(string nomeArquivo)
+{
+  vector<MyColorRGB> vectorColor;
+
+  Image image;
+  image.read(this->PATH + nomeArquivo);
+
+  int width = image.columns();
+  int height = image.rows();
+
+  Pixels view(image);
+  PixelPacket *pixels = view.get(0, 0, width, height);
+
+  for(int i = 0; i < width; i++)
+  {
+    for(int j = 0; j < height; j++)
+    {
+      MyColorRGB color;
+      Color pixelColor = pixels[width * i + j];
+
+      color.red = (int)pixelColor.redQuantum();
+      color.green = (int)pixelColor.greenQuantum();
+      color.blue = (int)pixelColor.blueQuantum();
+
+      vectorColor.push_back(color);
+    }
+    cout << endl;
+  }
+
+  return vectorColor;
 }
 
 void
@@ -204,6 +346,13 @@ Mesh::criarBufferDeIndex()
   glGenBuffers(1, &this->IBO);
   glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, this->IBO);
   glBufferData(GL_ELEMENT_ARRAY_BUFFER, this->vertexIndex.size()*sizeof(unsigned int), &this->vertexIndex[0], GL_STATIC_DRAW);
+}
+
+void
+Mesh::criarBufferTexture()
+{
+  glGenTextures(1, &this->textureArrayID);
+  glBindTexture( GL_TEXTURE_2D, this->textureArrayID);
 }
 
 void
@@ -337,7 +486,6 @@ Mesh::rotateY(float angleY)
 {
   this->angleY += angleY;
 }
-
 
 void
 Mesh::rotateX(float angleX)
