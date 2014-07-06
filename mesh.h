@@ -50,10 +50,10 @@ class Mesh
 
   private:
 
-    string PATH;
-
     void carregarMaterial(string nomeArquivo);
     vector< MyColorRGB > getColorRGB(string nomeArquivo);
+
+    string getPath(string fileName);
 
     float encontrarDeltaX();
     float encontrarDeltaY();

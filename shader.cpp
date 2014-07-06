@@ -50,7 +50,10 @@ GerenciadorShader::readShaderSource(const char* shaderFile)
 
     fseek(fp, 0L, SEEK_SET);
     char* buf = new char[size + 1];
-    fread(buf, 1, size, fp);
+    int r = fread(buf, 1, size, fp);
+
+    if(r == 0)
+      printf("\n fread return: %d", r);
 
     buf[size] = '\0';
     fclose(fp);
@@ -91,7 +94,11 @@ GerenciadorShader::initShader()
 	    glGetShaderInfoLog(shader, logSize, NULL, logMsg);
 		
 		  printf("\n \n logSize %i failed to compile: %s",logSize, logMsg);
-		  scanf("%i",&i);
+		  int r = scanf("%i",&i);
+
+      if(r == 0)
+        printf("\n scanf return: %d", r);
+      
 		  exit(EXIT_FAILURE);
 	  }
 

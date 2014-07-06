@@ -2,7 +2,6 @@
 #include "CG.h"
 #include "mesh.h"
 #include "shader.h"
-#include "camera.h"
 
 #include <Magick++.h>
 

@@ -8,8 +8,6 @@ Mesh::Mesh()
   this->angleX = 0.0f;
   this->angleY = 0.0f;
   this->angleZ = 0.0f;
-
-  this->PATH = "/home/luciano/Downloads/gun8/";
 }
 
 Mesh::~Mesh(){}
@@ -97,6 +95,7 @@ void
 Mesh::carregarArquivo(string nomeArquivo)
 {
   ifstream arquivo(nomeArquivo.c_str());
+  string path = getPath(nomeArquivo);
 
   if(!arquivo.is_open())
   {
@@ -117,6 +116,7 @@ Mesh::carregarArquivo(string nomeArquivo)
     if(line.substr(0, 6) == "mtllib")
     {
       stream >> trash >> this->fileMtl;
+      this->fileMtl = path + this->fileMtl;
     }
 
     else if(line.substr(0, 2) == "v ")
@@ -170,8 +170,8 @@ Mesh::carregarArquivo(string nomeArquivo)
 void
 Mesh::carregarMaterial(string nomeArquivo)
 {
-  string nomeCompletoArquivo = this->PATH + nomeArquivo;
-  ifstream arquivo(nomeCompletoArquivo.c_str());
+  ifstream arquivo(nomeArquivo.c_str());
+  string path = getPath(nomeArquivo);
 
   if(!arquivo.is_open())
   {
@@ -200,7 +200,6 @@ Mesh::carregarMaterial(string nomeArquivo)
     {
       this->material.push_back(Material());
       stream >> trash >> this->material.back().name;
-      cout << "this->material.back().name: " << this->material.back().name << endl;
     }
     else if(line.substr(0, 2) == "Ns")
     {
@@ -255,6 +254,7 @@ Mesh::carregarMaterial(string nomeArquivo)
     else if(line.substr(0, 6) == "map_Kd")
     {
       stream >> trash >> this->material.back().fileName;
+      this->material.back().fileName = path + this->material.back().fileName;
 
       this->material.back().color = getColorRGB(this->material.back().fileName);
     }
@@ -276,8 +276,10 @@ Mesh::getColorRGB(string nomeArquivo)
 {
   vector<MyColorRGB> vectorColor;
 
+  // cout << "nomeArquivo: " << nomeArquivo << endl;
+
   Image image;
-  image.read(this->PATH + nomeArquivo);
+  image.read(nomeArquivo);
 
   int width = image.columns();
   int height = image.rows();
@@ -298,7 +300,6 @@ Mesh::getColorRGB(string nomeArquivo)
 
       vectorColor.push_back(color);
     }
-    cout << endl;
   }
 
   return vectorColor;
@@ -545,4 +546,17 @@ Mesh::incPosition(float x, float y, float z)
   this->deltaX = this->encontrarDeltaX();
   this->deltaY = this->encontrarDeltaY();
   this->deltaZ = this->encontrarDeltaZ();
+}
+
+string
+Mesh::getPath(string fileName)
+{
+  for(int i = (int)fileName.size() - 1; i >= 0; i--)
+  {
+    if(fileName[i] == '/') {
+      return fileName.substr(0, i+1);
+    }
+  }
+
+  return "";
 }
