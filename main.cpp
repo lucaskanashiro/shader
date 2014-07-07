@@ -36,10 +36,11 @@ int main(int argc, char* argv[])
   InitializeMagick(*argv);
   GerenciadorGrafico gerenciador;
 
-  
+  Mesh *mesh;
+
   for(int i = 1; i < argc; i++)
   {
-    Mesh *mesh = new Mesh();
+    mesh = new Mesh();
     mesh->carregarArquivo(argv[i]);
     mesh->redimensionar();
     mesh->transladar();
@@ -230,136 +231,136 @@ inline void moveCamera()
 inline void moveObjects()
 {
   if(sdlEvent.key.keysym.sym == SDLK_c)
-      {
-        if(sdlEvent.key.state == SDL_PRESSED)
-        {
-          indice++;
-          indice = indice % vectorMesh.size();
-        }
-      }
+  {
+    if(sdlEvent.key.state == SDL_PRESSED)
+    {
+      indice++;
+      indice = indice % vectorMesh.size();
+    }
+  }
 
-      if(sdlEvent.key.keysym.sym == SDLK_x)
-      {
-        if(sdlEvent.key.state == SDL_PRESSED)
-        {
-          indice--;
-          indice = indice % vectorMesh.size();
-        }
-      }
+  if(sdlEvent.key.keysym.sym == SDLK_x)
+  {
+    if(sdlEvent.key.state == SDL_PRESSED)
+    {
+      indice--;
+      indice = indice % vectorMesh.size();
+    }
+  }
 
-      if(sdlEvent.key.keysym.sym == SDLK_PAGEUP)
-      {
-        if(sdlEvent.key.state == SDL_PRESSED)
-        {
-          // cout << endl;
-          // cout << "vectorMesh: " << vectorMesh->getZMax() << endl;
-          vectorMesh[indice]->resize(1.2);
-        }
-      }
+  if(sdlEvent.key.keysym.sym == SDLK_PAGEUP)
+  {
+    if(sdlEvent.key.state == SDL_PRESSED)
+    {
+      // cout << endl;
+      // cout << "vectorMesh: " << vectorMesh->getZMax() << endl;
+      vectorMesh[indice]->resize(1.2);
+    }
+  }
 
-      if(sdlEvent.key.keysym.sym == SDLK_PAGEDOWN)
-      {
-        if(sdlEvent.key.state == SDL_PRESSED)
-        {
-          // cout << endl;
-          // cout << "vectorMesh: " << vectorMesh->getZMax() << endl;
-          vectorMesh[indice]->resize(0.83);
-        }
-      }
+  if(sdlEvent.key.keysym.sym == SDLK_PAGEDOWN)
+  {
+    if(sdlEvent.key.state == SDL_PRESSED)
+    {
+      // cout << endl;
+      // cout << "vectorMesh: " << vectorMesh->getZMax() << endl;
+      vectorMesh[indice]->resize(0.83);
+    }
+  }
 
-      if(sdlEvent.key.keysym.sym == SDLK_w)
-      {
-        if(sdlEvent.key.state == SDL_PRESSED)
-          velocityAngleY = VELOCITY_ANGLE;
-        else
-          velocityAngleY = 0;
-      }
+  if(sdlEvent.key.keysym.sym == SDLK_w)
+  {
+    if(sdlEvent.key.state == SDL_PRESSED)
+      velocityAngleY = VELOCITY_ANGLE;
+    else
+      velocityAngleY = 0;
+  }
 
-      if(sdlEvent.key.keysym.sym == SDLK_s)
-      {
-        if(sdlEvent.key.state == SDL_PRESSED)
-          velocityAngleY = -VELOCITY_ANGLE;
-        else
-          velocityAngleY = 0;
-      }
+  if(sdlEvent.key.keysym.sym == SDLK_s)
+  {
+    if(sdlEvent.key.state == SDL_PRESSED)
+      velocityAngleY = -VELOCITY_ANGLE;
+    else
+      velocityAngleY = 0;
+  }
 
-      if(sdlEvent.key.keysym.sym == SDLK_d)
-      {
-        if(sdlEvent.key.state == SDL_PRESSED)
-          velocityAngleX = VELOCITY_ANGLE;
-        else
-          velocityAngleX = 0;
-      }
+  if(sdlEvent.key.keysym.sym == SDLK_d)
+  {
+    if(sdlEvent.key.state == SDL_PRESSED)
+      velocityAngleX = VELOCITY_ANGLE;
+    else
+      velocityAngleX = 0;
+  }
 
-      if(sdlEvent.key.keysym.sym == SDLK_a)
-      {
-        if(sdlEvent.key.state == SDL_PRESSED)
-          velocityAngleX = -VELOCITY_ANGLE;
-        else
-          velocityAngleX = 0;
-      }
+  if(sdlEvent.key.keysym.sym == SDLK_a)
+  {
+    if(sdlEvent.key.state == SDL_PRESSED)
+      velocityAngleX = -VELOCITY_ANGLE;
+    else
+      velocityAngleX = 0;
+  }
 
-      if(sdlEvent.key.keysym.sym == SDLK_e)
-      {
-        if(sdlEvent.key.state == SDL_PRESSED)
-          velocityAngleZ = VELOCITY_ANGLE;
-        else
-          velocityAngleZ = 0;
-      }
+  if(sdlEvent.key.keysym.sym == SDLK_e)
+  {
+    if(sdlEvent.key.state == SDL_PRESSED)
+      velocityAngleZ = VELOCITY_ANGLE;
+    else
+      velocityAngleZ = 0;
+  }
 
-      if(sdlEvent.key.keysym.sym == SDLK_q)
-      {
-        if(sdlEvent.key.state == SDL_PRESSED)
-          velocityAngleZ = -VELOCITY_ANGLE;
-        else
-          velocityAngleZ = 0;
-      }
+  if(sdlEvent.key.keysym.sym == SDLK_q)
+  {
+    if(sdlEvent.key.state == SDL_PRESSED)
+      velocityAngleZ = -VELOCITY_ANGLE;
+    else
+      velocityAngleZ = 0;
+  }
 
-      if(sdlEvent.key.keysym.sym == SDLK_UP)
-      {
-        if(sdlEvent.key.state == SDL_PRESSED)
-          velocityY = VELOCITY_MOVE;
-        else
-          velocityY = 0;
-      }
+  if(sdlEvent.key.keysym.sym == SDLK_UP)
+  {
+    if(sdlEvent.key.state == SDL_PRESSED)
+      velocityY = VELOCITY_MOVE;
+    else
+      velocityY = 0;
+  }
 
-      if(sdlEvent.key.keysym.sym == SDLK_DOWN)
-      {
-        if(sdlEvent.key.state == SDL_PRESSED)
-          velocityY = -VELOCITY_MOVE;
-        else
-          velocityY = 0;
-      }
+  if(sdlEvent.key.keysym.sym == SDLK_DOWN)
+  {
+    if(sdlEvent.key.state == SDL_PRESSED)
+      velocityY = -VELOCITY_MOVE;
+    else
+      velocityY = 0;
+  }
 
-      if(sdlEvent.key.keysym.sym == SDLK_LEFT)
-      {
-        if(sdlEvent.key.state == SDL_PRESSED)
-          velocityX = -VELOCITY_MOVE;
-        else
-          velocityX = 0;
-      }
+  if(sdlEvent.key.keysym.sym == SDLK_LEFT)
+  {
+    if(sdlEvent.key.state == SDL_PRESSED)
+      velocityX = -VELOCITY_MOVE;
+    else
+      velocityX = 0;
+  }
 
-      if(sdlEvent.key.keysym.sym == SDLK_RIGHT)
-      {
-        if(sdlEvent.key.state == SDL_PRESSED)
-          velocityX = VELOCITY_MOVE;
-        else
-          velocityX = 0;
-      }
+  if(sdlEvent.key.keysym.sym == SDLK_RIGHT)
+  {
+    if(sdlEvent.key.state == SDL_PRESSED)
+      velocityX = VELOCITY_MOVE;
+    else
+      velocityX = 0;
+  }
 
-      if(sdlEvent.key.keysym.sym == SDLK_m)
-      {
-        if(sdlEvent.key.state == SDL_PRESSED)
-          velocityZ = -VELOCITY_MOVE;
-        else
-          velocityZ = 0;
-      }
+  if(sdlEvent.key.keysym.sym == SDLK_m)
+  {
+    if(sdlEvent.key.state == SDL_PRESSED)
+      velocityZ = -VELOCITY_MOVE;
+    else
+      velocityZ = 0;
+  }
 
-      if(sdlEvent.key.keysym.sym == SDLK_n)
-      {
-        if(sdlEvent.key.state == SDL_PRESSED)
-          velocityZ = VELOCITY_MOVE;
-        else
-          velocityZ = 0;
-      }
+  if(sdlEvent.key.keysym.sym == SDLK_n)
+  {
+    if(sdlEvent.key.state == SDL_PRESSED)
+      velocityZ = VELOCITY_MOVE;
+    else
+      velocityZ = 0;
+  }
 }

@@ -1,10 +1,11 @@
 #version 130
 
-in vec4 color;
+uniform sampler2D texUnit;
 
-out vec4 fcolor;
+in vec2 texCoordV;
 
-void main()
-{
-  fcolor = color;
+out vec4 colorOut;
+
+void main() {
+	colorOut = texture(texUnit, texCoordV);
 }

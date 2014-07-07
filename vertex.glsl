@@ -1,7 +1,9 @@
 #version 130
 
-in vec4 vPosition;
-in vec4 vColor;
+in vec4 position;
+in vec2 texCoord;
+
+out vec2 texCoordV;
 
 uniform float midX;
 uniform float midY;
@@ -15,7 +17,6 @@ float rad_angle_x;
 float rad_angle_y;
 float rad_angle_z;
 
-out vec4 color;
 
 vec4 rotate(vec4 a);
 
@@ -30,7 +31,7 @@ void main()
   vec4 d = rotate(a);
 
   gl_Position = gl_ModelViewProjectionMatrix*d;
-  color = vColor;
+  texCoordV = texCoord;
 }
 
 vec4 rotate(vec4 a)

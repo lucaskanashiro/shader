@@ -55,7 +55,7 @@ struct MyColorRGB {
 
 struct Material
 {
-  int illum;
+  int illum, imageID;
   string name;
   string fileName;
   GLuint textureID;
