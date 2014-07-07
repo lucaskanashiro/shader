@@ -61,6 +61,8 @@ class Mesh
 
     void freeBuffers();
 
+    int loadImage(string imageName);
+
     GLuint VBO, IBO, vertexArrayID, textureArrayID;
     float deltaX, deltaY, deltaZ, xMin, yMin, zMin;
     float zMax;

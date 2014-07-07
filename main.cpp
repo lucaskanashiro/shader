@@ -4,6 +4,7 @@
 #include "shader.h"
 
 #include <Magick++.h>
+#include <IL/il.h>
 
 using namespace Magick;
 
@@ -33,6 +34,42 @@ void (*keyboardFunction)();
 
 int main(int argc, char* argv[])
 {
+  // string fileName = "/home/luciano/Documents/UnB/ICG/repositorios/shader/Model_Texture/TexturaArcadeEsquedo/Right_Side_Image.jpg";
+  // string fileName = "./Right_Side_Image.jpg";
+  // int imageID, imageWidth, imageHeight;
+  // unsigned char* imageData;
+
+  // ILuint id;
+
+  // cout << "- 1 -" << endl;
+
+  // ilGenImages(1,&id); 
+  // cout << "- 2 -" << endl;
+  // ilBindImage(id);
+  // cout << "- 3 -" << endl;
+
+  // imageID = ilLoadImage(fileName.c_str());
+  // cout << "- 4 -" << endl;
+  // if(imageID == 0)
+  // {
+  //   ilDeleteImages(1,&id);
+  //   cout << "Error to load image: " << fileName << endl;
+  //   cout << "Error Message: " << ilGetError() << endl;
+  // }
+  // else
+  // {
+  //   imageWidth = ilGetInteger(IL_IMAGE_WIDTH);
+  //   imageHeight = ilGetInteger(IL_IMAGE_HEIGHT);
+  //   imageData = ilGetData();
+    
+  //   cout << endl << "+----------------------------------+" << endl;
+  //   cout << "fileName: " << fileName << endl;
+  //   cout << "imageID: " << imageID << endl;
+  //   cout << "imageWidth: " << imageWidth << endl;
+  //   cout << "imageHeight: " << imageHeight << endl;
+  //   cout << "imageData: " << imageData << endl;
+  // }
+
   InitializeMagick(*argv);
   GerenciadorGrafico gerenciador;
 

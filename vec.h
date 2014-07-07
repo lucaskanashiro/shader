@@ -55,10 +55,11 @@ struct MyColorRGB {
 
 struct Material
 {
-  int illum, imageID;
+  int illum, imageID, imageWidth, imageHeight;
+  GLuint textureID;
+  unsigned char* imageData;
   string name;
   string fileName;
-  GLuint textureID;
   float ns, ni, d, tr, tf[3];
   float ka[3], kd[3], ks[3], ke[3];
 

@@ -1,4 +1,5 @@
 #include "mesh.h"
+#include <IL/il.h>
 #include <cmath>
 
 using namespace Magick;
@@ -193,8 +194,20 @@ Mesh::carregarMaterial(string nomeArquivo)
 
   while(getline(arquivo, line))
   {
-    stringstream stream(line);
+    bool copy = false;
+    string temp = "";
 
+    for(unsigned int i = 0; i < line.size(); i++)
+    {
+      if(isalnum(line[i]))
+        copy = true;
+
+      if(copy)
+        temp += line[i];
+    }
+    line = temp;
+
+    stringstream stream(line);
 
     if(line.substr(0, 6) == "newmtl")
     {
@@ -251,12 +264,33 @@ Mesh::carregarMaterial(string nomeArquivo)
       stream >> this->material.back().ke[1];
       stream >> this->material.back().ke[2];
     }
-    else if(line.substr(0, 6) == "map_Kd")
+    else if(line.substr(0, 6) == "map_Kd") //arcade
+    // else if(line.substr(0, 8) == "map_bump") //gun8
     {
       stream >> trash >> this->material.back().fileName;
       this->material.back().fileName = path + this->material.back().fileName;
 
       this->material.back().color = getColorRGB(this->material.back().fileName);
+
+      this->material.back().imageID = loadImage(this->material.back().fileName.c_str());
+      if(this->material.back().imageID == 0)
+      {
+        cout << "Error to load image: " << this->material.back().fileName << endl;
+      }
+      else
+      {
+        ilBindImage(this->material.back().imageID);
+        this->material.back().imageWidth = ilGetInteger(IL_IMAGE_WIDTH);
+        this->material.back().imageHeight = ilGetInteger(IL_IMAGE_HEIGHT);
+        this->material.back().imageData = ilGetData();
+
+        cout << endl << "+----------------------------------+" << endl;
+        cout << "material.back().fileName: " << this->material.back().fileName << endl;
+        cout << "material.back().imageID: " << this->material.back().imageID << endl;
+        cout << "material.back().imageWidth: " << this->material.back().imageWidth << endl;
+        cout << "material.back().imageHeight: " << this->material.back().imageHeight << endl;
+        // cout << "material.back().imageData: " << this->material.back().imageData << endl;
+      }
     }
 
   }
@@ -559,4 +593,30 @@ Mesh::getPath(string fileName)
   }
 
   return "";
+}
+
+int
+Mesh::loadImage(string imageName)
+{
+  ILboolean success;
+  unsigned int imageID;
+ 
+  // init DevIL. This needs to be done only once per application
+  ilInit();
+  // generate an image name
+  ilGenImages(1, &imageID); 
+  // bind it
+  ilBindImage(imageID); 
+  // match image origin to OpenGL’s
+  ilEnable(IL_ORIGIN_SET);
+  ilOriginFunc(IL_ORIGIN_LOWER_LEFT);
+  // load  the image
+  success = ilLoadImage((ILstring)imageName.c_str());
+  ilConvertImage(IL_RGBA, IL_UNSIGNED_BYTE);
+  // check to see if everything went OK
+  if (!success) {
+    ilDeleteImages(1, &imageID); 
+    return 0;
+  }
+  else return imageID;
 }

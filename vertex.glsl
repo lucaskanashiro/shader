@@ -1,7 +1,8 @@
 #version 130
 
-in vec4 position;
-in vec2 texCoord;
+in vec3 position;
+in vec4 color;
+in vec2 texCoord; 
 
 out vec2 texCoordV;
 
@@ -16,7 +17,6 @@ uniform float angleZ;
 float rad_angle_x;
 float rad_angle_y;
 float rad_angle_z;
-
 
 vec4 rotate(vec4 a);
 
