@@ -145,17 +145,27 @@ Mesh::carregarArquivo(string nomeArquivo)
       for(int i = 0; i < 3; i++)
       {
         stream >> v >> c_trash >> n >> c_trash >> t;
-        this->vertexIndex.push_back(v);
-        this->normalIndex.push_back(n);
-        this->textureIndex.push_back(t);
+        this->vertexIndex.push_back(v-1);
+        this->normalIndex.push_back(n-1);
+        this->textureIndex.push_back(t-1);
       }
     }
   }
 
-  // for(unsigned int i=0; i<this->vertexIndex.size(); i++)
+  for(unsigned int i = 0; i < this->vertexIndex.size() / 3; i++)
+  {
+    cout << "f " << this->vertexIndex[(i * 2) + i + 0] << '/' << this->normalIndex[(i * 2) + i + 0] << '/' << this->textureIndex[(i * 2) + i + 0] << ' ';
+    cout << this->vertexIndex[(i * 2) + i + 1] << '/' << this->normalIndex[(i * 2) + i + 1] << '/' << this->textureIndex[(i * 2) + i + 1] << ' ';
+    cout << this->vertexIndex[(i * 2) + i + 2] << '/' << this->normalIndex[(i * 2) + i + 2] << '/' << this->textureIndex[(i * 2) + i + 2] << ' ' << endl;
+  }
+
+  // for(unsigned int i = 0; i < this->vertexIndex.size(); i += 3)
   // {
-  //   cout << this->vertexIndex[i] << endl;
+  //   cout << "f " << this->vertexIndex[i] << '/' << this->normalIndex[i] << '/' << this->textureIndex[i] << ' ';
+  //   cout << this->vertexIndex[i+1] << '/' << this->normalIndex[i+1] << '/' << this->textureIndex[i+1] << ' ';
+  //   cout << this->vertexIndex[i+2] << '/' << this->normalIndex[i+2] << '/' << this->textureIndex[i+2] << ' ' << endl;
   // }
+  // cout << this->vertexIndex.size() << endl;
 
   arquivo.close();
 
@@ -362,71 +372,72 @@ Mesh::criarBufferTextureIndex()
 }
 
 void
-Mesh::draw(GLuint program)
+Mesh::draw(GLuint)
 {
-  this->criarVertexArray();
-  this->criarBufferDeVertex();
-  this->criarBufferDeIndex();
 
-  this->criarBufferTexture();
-  this->criarBufferTextureIndex();
+  for(unsigned int i = 0; i < vertexIndex.size() / 3; i++)
+  {
+    glBegin(GL_LINES);
+      this->vertex[vertexIndex[(i * 2) + i + 0]].drawGl();
+      this->vertex[vertexIndex[(i * 2) + i + 1]].drawGl();
+    glEnd();
 
-  GLuint myUniformLocationMidX = glGetUniformLocation(program, "midX");
-  GLuint myUniformLocationMidY = glGetUniformLocation(program, "midY");
-  GLuint myUniformLocationMidZ = glGetUniformLocation(program, "midZ");
+    glBegin(GL_LINES);
+      this->vertex[vertexIndex[(i * 2) + i + 0]].drawGl();
+      this->vertex[vertexIndex[(i * 2) + i + 2]].drawGl();
+    glEnd();
 
-  GLuint myUniformLocationAngleY = glGetUniformLocation(program, "angleY");
-  GLuint myUniformLocationAngleX = glGetUniformLocation(program, "angleX");
-  GLuint myUniformLocationAngleZ = glGetUniformLocation(program, "angleZ");
+    glBegin(GL_LINES); 
+      this->vertex[vertexIndex[(i * 2) + i + 1]].drawGl();
+      this->vertex[vertexIndex[(i * 2) + i + 2]].drawGl();
+    glEnd();
+  }
 
-  glEnableVertexAttribArray(0);
-  glEnableVertexAttribArray(1);
-  glEnableVertexAttribArray(2);
 
-  glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex), (const GLvoid*) 0);
-  glVertexAttribPointer(1, 4, GL_INT, GL_TRUE, sizeof(Vertex), (const GLvoid*) 3);
-  glVertexAttribPointer(2, 2, GL_FLOAT, GL_TRUE, sizeof(Vertex2D), (const GLvoid*) 0);
+  // this->criarVertexArray();
+  // this->criarBufferDeVertex();
+  // this->criarBufferDeIndex();
+
+  // this->criarBufferTexture();
+  // this->criarBufferTextureIndex();
+
+  // GLuint myUniformLocationMidX = glGetUniformLocation(program, "midX");
+  // GLuint myUniformLocationMidY = glGetUniformLocation(program, "midY");
+  // GLuint myUniformLocationMidZ = glGetUniformLocation(program, "midZ");
+
+  // GLuint myUniformLocationAngleY = glGetUniformLocation(program, "angleY");
+  // GLuint myUniformLocationAngleX = glGetUniformLocation(program, "angleX");
+  // GLuint myUniformLocationAngleZ = glGetUniformLocation(program, "angleZ");
+
+  // glEnableVertexAttribArray(0);
+  // glEnableVertexAttribArray(1);
+  // glEnableVertexAttribArray(2);
+
+  // glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex), (const GLvoid*) 0);
+  // glVertexAttribPointer(1, 4, GL_INT, GL_TRUE, sizeof(Vertex), (const GLvoid*) 3);
+  // glVertexAttribPointer(2, 2, GL_FLOAT, GL_TRUE, sizeof(Vertex2D), (const GLvoid*) 0);
   
-  glUniform1f(myUniformLocationMidX, this->xMid);
-  glUniform1f(myUniformLocationMidY, this->yMid);
-  glUniform1f(myUniformLocationMidZ, this->zMid);
+  // glUniform1f(myUniformLocationMidX, this->xMid);
+  // glUniform1f(myUniformLocationMidY, this->yMid);
+  // glUniform1f(myUniformLocationMidZ, this->zMid);
 
-  glUniform1f(myUniformLocationAngleY, this->angleY);
-  glUniform1f(myUniformLocationAngleX, this->angleX);
-  glUniform1f(myUniformLocationAngleZ, this->angleZ);
+  // glUniform1f(myUniformLocationAngleY, this->angleY);
+  // glUniform1f(myUniformLocationAngleX, this->angleX);
+  // glUniform1f(myUniformLocationAngleZ, this->angleZ);
 
-  glBindTexture(GL_TEXTURE_2D, this->material[0].textureID);
+  // glBindTexture(GL_TEXTURE_2D, this->material[0].textureID);
 
-  glDrawElements(GL_TRIANGLES, this->vertexIndex.size()*sizeof(unsigned int), GL_UNSIGNED_INT, (const GLvoid*) 0);
-  // glDrawElements(GL_TRIANGLES, this->textureIndex.size()*sizeof(unsigned int), GL_UNSIGNED_INT, (const GLvoid*) 0);
+  // glDrawElements(GL_TRIANGLES, this->vertexIndex.size()*sizeof(unsigned int), GL_UNSIGNED_INT, (const GLvoid*) 0);
 
-  // for(unsigned int i = 0; i < vertexIndex.size(); i++)
-  // {
-  //   glBegin(GL_LINES);
-  //     this->vertex[vertexIndex[(i*3) + 0]].drawGl();
-  //     this->vertex[vertexIndex[(i*3) + 1]].drawGl();
-  //   glEnd();
+  // glDisableVertexAttribArray(0);
+  // glDisableVertexAttribArray(1);
+  // glDisableVertexAttribArray(2);
 
-  //   glBegin(GL_LINES);
-  //     this->vertex[vertexIndex[(i*3) + 0]].drawGl();
-  //     this->vertex[vertexIndex[(i*3) + 2]].drawGl();
-  //   glEnd();
+  // this->freeBuffers();
 
-  //   glBegin(GL_LINES);
-  //     this->vertex[vertexIndex[(i*3) + 1]].drawGl();
-  //     this->vertex[vertexIndex[(i*3) + 2]].drawGl();
-  //   glEnd();
-  // }
-
-  glDisableVertexAttribArray(0);
-  glDisableVertexAttribArray(1);
-  glDisableVertexAttribArray(2);
-
-  this->freeBuffers();
-
-  this->deltaX = this->encontrarDeltaX();
-  this->deltaY = this->encontrarDeltaY();
-  this->deltaZ = this->encontrarDeltaZ();
+  // this->deltaX = this->encontrarDeltaX();
+  // this->deltaY = this->encontrarDeltaY();
+  // this->deltaZ = this->encontrarDeltaZ();
 }
 
 void
@@ -519,19 +530,64 @@ Mesh::resizePoints(Vertex &head, Vertex &tail, float scalar)
 void
 Mesh::rotateY(float angleY)
 {
-  this->angleY += angleY;
+  float pi = 3.141592653589793;
+  float radAngleY = angleY*pi/180.0;
+  vector<Vertex> b = this->vertex;
+  vector<Vertex> c = this->vertex;
+
+  Vertex midPoint = getMidPoint();
+  float midX = midPoint.position[0];
+  float midZ = midPoint.position[2];
+
+  for(unsigned int i = 0; i < b.size(); i++)
+  {
+    c[i].position[0] = (b[i].position[0] - midX) * cos(radAngleY) - (b[i].position[2] - midZ) * sin(radAngleY) + midX;
+    c[i].position[2] = (b[i].position[2] - midZ) * cos(radAngleY) + (b[i].position[0] - midX) * sin(radAngleY) + midZ;
+  }
+
+  this->vertex = c;
 }
 
 void
 Mesh::rotateX(float angleX)
 {
-  this->angleX += angleX;
+  float pi = 3.141592653589793;
+  float radAngleX = angleX*pi/180.0;
+  vector<Vertex> a = this->vertex;
+  vector<Vertex> b = this->vertex;
+
+  Vertex midPoint = getMidPoint();
+  float midY = midPoint.position[1];
+  float midZ = midPoint.position[2];
+
+  for(unsigned int i = 0; i < a.size(); i++)
+  {
+    b[i].position[1] = (a[i].position[1] - midY) * cos(radAngleX) - (a[i].position[2] - midZ) * sin(radAngleX) + midY;
+    b[i].position[2] = (a[i].position[2] - midZ) * cos(radAngleX) + (a[i].position[1] - midY) * sin(radAngleX) + midZ;
+  }
+
+  this->vertex = b;
 }
 
 void
 Mesh::rotateZ(float angleZ)
 {
-  this->angleZ += angleZ;
+  float pi = 3.141592653589793;
+  float radAngleZ = angleZ*pi/180.0;
+  vector<Vertex> c = this->vertex;
+  vector<Vertex> d = this->vertex;
+
+  Vertex midPoint = getMidPoint();
+  float midX = midPoint.position[0];
+  float midY = midPoint.position[1];
+
+  for(unsigned int i = 0; i < c.size(); i++)
+  {
+    d[i].position[0] = (c[i].position[0] - midX) * cos(radAngleZ) - (c[i].position[1] - midY) * sin(radAngleZ) + midX;
+    d[i].position[1] = (c[i].position[1] - midY) * cos(radAngleZ) + (c[i].position[0] - midX) * sin(radAngleZ) + midY;
+  }
+
+  this->vertex = d;
 }
 
 void
@@ -650,4 +706,55 @@ Mesh::prepareTexture(Material &material) {
   // glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
   // glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
   // glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+}
+
+Vertex
+Mesh::getMidPoint()
+{
+  float minX, minY, minZ;
+  float maxX, maxY, maxZ;
+  float midX, midY, midZ;
+
+  int x = 0, y = 1, z = 2;
+
+  for(unsigned int i = 0; i < vertex.size(); i++)
+  {
+    if(i == 0)
+    {
+      minX = vertex[i].position[x];
+      minY = vertex[i].position[y];
+      minZ = vertex[i].position[z];
+
+      maxX = vertex[i].position[x];
+      maxY = vertex[i].position[y];
+      maxZ = vertex[i].position[z];
+    }
+
+    if(vertex[i].position[x] < minX)
+      minX = vertex[i].position[x];
+
+    if(vertex[i].position[x] > maxX)
+      maxX = vertex[i].position[x];
+
+    if(vertex[i].position[y] < minY)
+      minY = vertex[i].position[y];
+
+    if(vertex[i].position[y] > maxY)
+      maxY = vertex[i].position[y];
+
+    if(vertex[i].position[z] < minZ)
+      minZ = vertex[i].position[z];
+
+    if(vertex[i].position[z] > maxZ)
+      maxZ = vertex[i].position[z];
+  }
+
+  midX = (maxX + minX) / 2;
+  midY = (maxY + minY) / 2;
+  midZ = (maxZ + minZ) / 2;
+
+  Vertex midPoint = Vertex(midX, midY, midZ);
+
+  return midPoint;
+
 }

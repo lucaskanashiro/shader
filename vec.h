@@ -13,7 +13,7 @@ struct Vertex
   float position[3];
   int color[4];
 
-  Vertex(float x=0, float y=0, float z=0, int r=255, int g=255, int b=255, int a=255)
+  Vertex(float x=0, float y=0, float z=0, int r=0, int g=0, int b=0, int a=255)
   {
     position[0] = x;
     position[1] = y;

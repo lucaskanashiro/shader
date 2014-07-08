@@ -232,7 +232,7 @@ inline void moveCamera()
       velocityCameraZ = 0;
   }
 
-  if(sdlEvent.key.keysym.sym == SDLK_w)
+  if(sdlEvent.key.keysym.sym == SDLK_d)
   {
     if(sdlEvent.key.state == SDL_PRESSED)
       velocityCameraAngleY = VELOCITY_ANGLE;
@@ -240,7 +240,7 @@ inline void moveCamera()
       velocityCameraAngleY = 0;
   }
 
-  if(sdlEvent.key.keysym.sym == SDLK_s)
+  if(sdlEvent.key.keysym.sym == SDLK_a)
   {
     if(sdlEvent.key.state == SDL_PRESSED)
       velocityCameraAngleY = -VELOCITY_ANGLE;
@@ -248,7 +248,7 @@ inline void moveCamera()
       velocityCameraAngleY = 0;
   }
 
-  if(sdlEvent.key.keysym.sym == SDLK_d)
+  if(sdlEvent.key.keysym.sym == SDLK_w)
   {
     if(sdlEvent.key.state == SDL_PRESSED)
       velocityCameraAngleX = VELOCITY_ANGLE;
@@ -256,7 +256,7 @@ inline void moveCamera()
       velocityCameraAngleX = 0;
   }
 
-  if(sdlEvent.key.keysym.sym == SDLK_a)
+  if(sdlEvent.key.keysym.sym == SDLK_s)
   {
     if(sdlEvent.key.state == SDL_PRESSED)
       velocityCameraAngleX = -VELOCITY_ANGLE;
@@ -321,7 +321,7 @@ inline void moveObjects()
     }
   }
 
-  if(sdlEvent.key.keysym.sym == SDLK_w)
+  if(sdlEvent.key.keysym.sym == SDLK_d)
   {
     if(sdlEvent.key.state == SDL_PRESSED)
       velocityAngleY = VELOCITY_ANGLE;
@@ -329,7 +329,7 @@ inline void moveObjects()
       velocityAngleY = 0;
   }
 
-  if(sdlEvent.key.keysym.sym == SDLK_s)
+  if(sdlEvent.key.keysym.sym == SDLK_a)
   {
     if(sdlEvent.key.state == SDL_PRESSED)
       velocityAngleY = -VELOCITY_ANGLE;
@@ -337,15 +337,7 @@ inline void moveObjects()
       velocityAngleY = 0;
   }
 
-  if(sdlEvent.key.keysym.sym == SDLK_d)
-  {
-    if(sdlEvent.key.state == SDL_PRESSED)
-      velocityAngleX = VELOCITY_ANGLE;
-    else
-      velocityAngleX = 0;
-  }
-
-  if(sdlEvent.key.keysym.sym == SDLK_a)
+  if(sdlEvent.key.keysym.sym == SDLK_w)
   {
     if(sdlEvent.key.state == SDL_PRESSED)
       velocityAngleX = -VELOCITY_ANGLE;
@@ -353,10 +345,18 @@ inline void moveObjects()
       velocityAngleX = 0;
   }
 
+  if(sdlEvent.key.keysym.sym == SDLK_s)
+  {
+    if(sdlEvent.key.state == SDL_PRESSED)
+      velocityAngleX = VELOCITY_ANGLE;
+    else
+      velocityAngleX = 0;
+  }
+
   if(sdlEvent.key.keysym.sym == SDLK_e)
   {
     if(sdlEvent.key.state == SDL_PRESSED)
-      velocityAngleZ = VELOCITY_ANGLE;
+      velocityAngleZ = -VELOCITY_ANGLE;
     else
       velocityAngleZ = 0;
   }
@@ -364,7 +364,7 @@ inline void moveObjects()
   if(sdlEvent.key.keysym.sym == SDLK_q)
   {
     if(sdlEvent.key.state == SDL_PRESSED)
-      velocityAngleZ = -VELOCITY_ANGLE;
+      velocityAngleZ = VELOCITY_ANGLE;
     else
       velocityAngleZ = 0;
   }

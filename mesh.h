@@ -30,7 +30,9 @@ class Mesh
     void draw(GLuint program);
 
 	float getZMax();
-    void setZMax(float z);		    
+    void setZMax(float z);
+
+    Vertex getMidPoint();
 
     void criarVertexArray();
     void criarBufferDeVertex();
@@ -45,6 +47,7 @@ class Mesh
     void rotateY(float angleY);
     void rotateX(float angleX);
     void rotateZ(float angleZ);
+
     void incPosition(float x, float y, float z);
 
     void prepareAllTexture();
