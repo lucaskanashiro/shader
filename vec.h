@@ -27,6 +27,17 @@ struct Vertex
 
 };
 
+struct Vertex2D
+{
+  float position[2];
+
+  Vertex2D(float x=0, float y=0)
+  {
+    position[0] = x;
+    position[1] = y;
+  }
+};
+
 struct Face
 {
   int indice[3][3];

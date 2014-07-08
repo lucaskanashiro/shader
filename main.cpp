@@ -4,6 +4,7 @@
 #include "shader.h"
 
 #include <Magick++.h>
+#include <GL/freeglut.h>
 #include <IL/il.h>
 
 using namespace Magick;
@@ -70,6 +71,19 @@ int main(int argc, char* argv[])
   //   cout << "imageData: " << imageData << endl;
   // }
 
+  // glutInit(&argc, argv);
+  // glutInitContextVersion(3, 1);
+  // glutInitContextProfile (GLUT_CORE_PROFILE );
+  // glewExperimental = GL_TRUE;
+  // glewInit();
+
+  // if (glewIsSupported("GL_VERSION_1_0"))
+  //   printf("Ready for OpenGL 1.0\n");
+  // else {
+  //   printf("OpenGL 1.0 not supported\n");
+  //   return(1);
+  // }
+
   InitializeMagick(*argv);
   GerenciadorGrafico gerenciador;
 
@@ -79,6 +93,7 @@ int main(int argc, char* argv[])
   {
     mesh = new Mesh();
     mesh->carregarArquivo(argv[i]);
+    mesh->prepareAllTexture();
     mesh->redimensionar();
     mesh->transladar();
 
@@ -90,6 +105,9 @@ int main(int argc, char* argv[])
   gerenciador.iniciarRender();
 
   glewInit();
+
+  glActiveTextureARB(GL_TEXTURE0_ARB);
+  glActiveTexture(GL_TEXTURE0);
   
 
   GerenciadorShader shader;

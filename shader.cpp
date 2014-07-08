@@ -105,7 +105,12 @@ GerenciadorShader::initShader()
 	  glAttachShader(program, shader);
   }
 
+  glBindFragDataLocation(program, 0, "outputF");
+
   glLinkProgram(program);
+
+  GLint myLoc = glGetUniformLocation(program, "texUnit");
+  glProgramUniform1d(program, myLoc, 0);
 
   GLint  linked;
   glGetProgramiv(program, GL_LINK_STATUS, &linked);

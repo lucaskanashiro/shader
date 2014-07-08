@@ -134,8 +134,8 @@ Mesh::carregarArquivo(string nomeArquivo)
 
     else if(line.substr(0,2) == "vt")
     {
-      stream >> trash >> x >> y >> z;
-      this->texture.push_back(Vertex(x, y, z));
+      stream >> trash >> x >> y;
+      this->texture.push_back(Vertex2D(x, y));
     }
 
     else if(line.substr(0,2) == "f ")
@@ -386,8 +386,17 @@ Mesh::criarBufferDeIndex()
 void
 Mesh::criarBufferTexture()
 {
-  glGenTextures(1, &this->textureArrayID);
-  glBindTexture( GL_TEXTURE_2D, this->textureArrayID);
+  glGenBuffers(1, &this->textureArrayID);
+  glBindBuffer(GL_TEXTURE_2D, this->textureArrayID);
+  glBufferData(GL_ELEMENT_ARRAY_BUFFER, this->texture.size()*sizeof(Vertex2D), &this->texture[0], GL_STATIC_DRAW);
+}
+
+void
+Mesh::criarBufferTextureIndex()
+{
+  glGenBuffers(1, &this->textureIndexArrayID);
+  glBindBuffer(GL_TEXTURE_2D, this->textureIndexArrayID);
+  glBufferData(GL_ELEMENT_ARRAY_BUFFER, this->textureIndex.size()*sizeof(unsigned int), &this->textureIndex[0], GL_STATIC_DRAW);
 }
 
 void
@@ -396,6 +405,9 @@ Mesh::draw(GLuint program)
   this->criarVertexArray();
   this->criarBufferDeVertex();
   this->criarBufferDeIndex();
+
+  this->criarBufferTexture();
+  this->criarBufferTextureIndex();
 
   GLuint myUniformLocationMidX = glGetUniformLocation(program, "midX");
   GLuint myUniformLocationMidY = glGetUniformLocation(program, "midY");
@@ -407,9 +419,11 @@ Mesh::draw(GLuint program)
 
   glEnableVertexAttribArray(0);
   glEnableVertexAttribArray(1);
+  glEnableVertexAttribArray(2);
 
   glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex), (const GLvoid*) 0);
   glVertexAttribPointer(1, 4, GL_INT, GL_TRUE, sizeof(Vertex), (const GLvoid*) 3);
+  glVertexAttribPointer(2, 2, GL_FLOAT, GL_TRUE, sizeof(Vertex2D), (const GLvoid*) 0);
   
   glUniform1f(myUniformLocationMidX, this->xMid);
   glUniform1f(myUniformLocationMidY, this->yMid);
@@ -420,9 +434,11 @@ Mesh::draw(GLuint program)
   glUniform1f(myUniformLocationAngleZ, this->angleZ);
 
   glDrawElements(GL_TRIANGLES, this->vertexIndex.size()*sizeof(unsigned int), GL_UNSIGNED_INT, (const GLvoid*) 0);
+  // glDrawElements(GL_TRIANGLES, this->textureIndex.size()*sizeof(unsigned int), GL_UNSIGNED_INT, (const GLvoid*) 0);
 
   glDisableVertexAttribArray(0);
   glDisableVertexAttribArray(1);
+  glDisableVertexAttribArray(2);
 
   this->freeBuffers();
 
@@ -436,6 +452,8 @@ Mesh::freeBuffers()
 {
   glDeleteBuffers(1, &this->VBO);
   glDeleteBuffers(1, &this->IBO);
+  glDeleteBuffers(1, &this->textureArrayID);
+  glDeleteBuffers(1, &this->textureIndexArrayID);
   this->VBO = 0;
   this->IBO = 0;
 }
@@ -619,4 +637,35 @@ Mesh::loadImage(string imageName)
     return 0;
   }
   else return imageID;
+}
+
+void
+Mesh::prepareAllTexture()
+{
+  prepareTexture(this->material[0]);
+}
+
+void
+Mesh::prepareTexture(Material &material) {
+  int w, h;
+  unsigned char* data;
+
+  w = material.imageWidth;
+  h = material.imageHeight;
+  data = material.imageData;
+
+  /* Create and load texture to OpenGL */
+  glGenTextures(1, &material.textureID); /* Texture name generation */
+  glBindTexture(GL_TEXTURE_2D, material.textureID); 
+  glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, 
+                w, h, 
+                0, GL_RGBA, GL_UNSIGNED_BYTE,
+                data);
+  // glBindTexture(GL_TEXTURE_2D, material.textureID);
+  // glActiveTexture(GL_TEXTURE0);
+  glGenerateMipmap(GL_TEXTURE_2D);
+  // glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
+  // glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
+  // glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+  // glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
 }

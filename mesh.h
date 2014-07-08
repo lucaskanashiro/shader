@@ -39,6 +39,7 @@ class Mesh
     void criarBufferDeIndex();
 
     void criarBufferTexture();
+    void criarBufferTextureIndex();
 
     void resize(float scalar);
     void resizePoints(Vertex &head, Vertex &tail, float scalar);
@@ -47,6 +48,8 @@ class Mesh
     void rotateX(float angleX);
     void rotateZ(float angleZ);
     void incPosition(float x, float y, float z);
+
+    void prepareAllTexture();
 
   private:
 
@@ -62,14 +65,15 @@ class Mesh
     void freeBuffers();
 
     int loadImage(string imageName);
+    void prepareTexture(Material &material);
 
-    GLuint VBO, IBO, vertexArrayID, textureArrayID;
+    GLuint VBO, IBO, vertexArrayID, textureArrayID, textureIndexArrayID;
     float deltaX, deltaY, deltaZ, xMin, yMin, zMin;
     float zMax;
     float xMid, yMid, zMid;
     vector<Vertex> vertex;
     vector<Vertex> normal;
-    vector<Vertex> texture;
+    vector<Vertex2D> texture;
     vector<unsigned int> vertexIndex;
     vector<unsigned int> normalIndex;
     vector<unsigned int> textureIndex;
