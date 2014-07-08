@@ -3,11 +3,8 @@
 #include "mesh.h"
 #include "shader.h"
 
-#include <Magick++.h>
 #include <GL/freeglut.h>
 #include <IL/il.h>
-
-using namespace Magick;
 
 const float VELOCITY_MOVE = 0.05;
 const float VELOCITY_ANGLE = 5;
@@ -84,7 +81,6 @@ int main(int argc, char* argv[])
   //   return(1);
   // }
 
-  InitializeMagick(*argv);
   GerenciadorGrafico gerenciador;
 
   Mesh *mesh;
@@ -136,6 +132,8 @@ int main(int argc, char* argv[])
   keyboardFunction = moveCamera;
 
   // glEnable(GL_DEPTH_TEST);
+  glEnable(GL_CULL_FACE);
+  glEnable(GL_MULTISAMPLE);
 
   while(!finish)
   {

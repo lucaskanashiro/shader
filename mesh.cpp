@@ -2,8 +2,6 @@
 #include <IL/il.h>
 #include <cmath>
 
-using namespace Magick;
-
 Mesh::Mesh()
 {
   this->angleX = 0.0f;
@@ -270,8 +268,6 @@ Mesh::carregarMaterial(string nomeArquivo)
       stream >> trash >> this->material.back().fileName;
       this->material.back().fileName = path + this->material.back().fileName;
 
-      this->material.back().color = getColorRGB(this->material.back().fileName);
-
       this->material.back().imageID = loadImage(this->material.back().fileName.c_str());
       if(this->material.back().imageID == 0)
       {
@@ -305,40 +301,6 @@ Mesh::carregarMaterial(string nomeArquivo)
   this->deltaZ = this->encontrarDeltaZ();
 }
 
-vector<MyColorRGB>
-Mesh::getColorRGB(string nomeArquivo)
-{
-  vector<MyColorRGB> vectorColor;
-
-  // cout << "nomeArquivo: " << nomeArquivo << endl;
-
-  Image image;
-  image.read(nomeArquivo);
-
-  int width = image.columns();
-  int height = image.rows();
-
-  Pixels view(image);
-  PixelPacket *pixels = view.get(0, 0, width, height);
-
-  for(int i = 0; i < width; i++)
-  {
-    for(int j = 0; j < height; j++)
-    {
-      MyColorRGB color;
-      Color pixelColor = pixels[width * i + j];
-
-      color.red = (int)pixelColor.redQuantum();
-      color.green = (int)pixelColor.greenQuantum();
-      color.blue = (int)pixelColor.blueQuantum();
-
-      vectorColor.push_back(color);
-    }
-  }
-
-  return vectorColor;
-}
-
 void
 Mesh::redimensionar()
 {
@@ -364,7 +326,7 @@ void
 Mesh::criarVertexArray()
 {
   glGenVertexArrays(1, &this->vertexArrayID); 
-  glBindVertexArray(vertexArrayID);
+  glBindVertexArray(this->vertexArrayID);
 }
 
 void
@@ -433,8 +395,28 @@ Mesh::draw(GLuint program)
   glUniform1f(myUniformLocationAngleX, this->angleX);
   glUniform1f(myUniformLocationAngleZ, this->angleZ);
 
+  glBindTexture(GL_TEXTURE_2D, this->material[0].textureID);
+
   glDrawElements(GL_TRIANGLES, this->vertexIndex.size()*sizeof(unsigned int), GL_UNSIGNED_INT, (const GLvoid*) 0);
   // glDrawElements(GL_TRIANGLES, this->textureIndex.size()*sizeof(unsigned int), GL_UNSIGNED_INT, (const GLvoid*) 0);
+
+  // for(unsigned int i = 0; i < vertexIndex.size(); i++)
+  // {
+  //   glBegin(GL_LINES);
+  //     this->vertex[vertexIndex[(i*3) + 0]].drawGl();
+  //     this->vertex[vertexIndex[(i*3) + 1]].drawGl();
+  //   glEnd();
+
+  //   glBegin(GL_LINES);
+  //     this->vertex[vertexIndex[(i*3) + 0]].drawGl();
+  //     this->vertex[vertexIndex[(i*3) + 2]].drawGl();
+  //   glEnd();
+
+  //   glBegin(GL_LINES);
+  //     this->vertex[vertexIndex[(i*3) + 1]].drawGl();
+  //     this->vertex[vertexIndex[(i*3) + 2]].drawGl();
+  //   glEnd();
+  // }
 
   glDisableVertexAttribArray(0);
   glDisableVertexAttribArray(1);
@@ -663,7 +645,7 @@ Mesh::prepareTexture(Material &material) {
                 data);
   // glBindTexture(GL_TEXTURE_2D, material.textureID);
   // glActiveTexture(GL_TEXTURE0);
-  glGenerateMipmap(GL_TEXTURE_2D);
+  // glGenerateMipmap(GL_TEXTURE_2D);
   // glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
   // glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
   // glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);

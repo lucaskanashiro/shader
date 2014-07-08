@@ -25,6 +25,22 @@ struct Vertex
     color[3] = a;
   }
 
+  void drawGl()
+  {
+    drawGlColor3d();
+    drawGlVertex3f();
+  }
+
+  void drawGlColor3d()
+  {
+    glColor3d(color[0], color[1], color[2]);
+  }
+
+  void drawGlVertex3f()
+  {
+    glVertex3f(position[0], position[1], position[2]);
+  }
+
 };
 
 struct Vertex2D
@@ -53,17 +69,6 @@ struct Face
   
 };
 
-struct MyColorRGB {
-  int red, green, blue;
-
-  MyColorRGB(int _red = 0, int _green = 0, int _blue = 0)
-  {
-    red = _red;
-    green = _green;
-    blue = _blue;
-  }
-};
-
 struct Material
 {
   int illum, imageID, imageWidth, imageHeight;
@@ -73,8 +78,6 @@ struct Material
   string fileName;
   float ns, ni, d, tr, tf[3];
   float ka[3], kd[3], ks[3], ke[3];
-
-  vector<MyColorRGB> color;
 
   Material() {};
 };

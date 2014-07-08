@@ -7,12 +7,10 @@
 #include <iostream>
 #include <sstream>
 #include <stdlib.h>
-#include <Magick++.h>
 
 #include "vec.h"
 
 using namespace std;
-using namespace Magick;
 
 class Mesh
 {
@@ -54,7 +52,6 @@ class Mesh
   private:
 
     void carregarMaterial(string nomeArquivo);
-    vector< MyColorRGB > getColorRGB(string nomeArquivo);
 
     string getPath(string fileName);
 
