@@ -1,3 +1,8 @@
+M Model_Texture/Mola/Mola.obj 0 -0.3 -0.125 0.2 0
+M Model_Texture/Mola/Mola.obj 0 -0.3 0.125 0.2 0
+M Model_Texture/Mola/Mola.obj 0.22 -0.3 0 0.2 0
+M Model_Texture/Mola/Mola.obj -0.22 -0.3 0 0.2 0
+M Model_Texture/Mesa/MesaLabirinto.obj 0 -0.155 0 0.088 0
 M Model_Texture/Luminaria/Luminaria.obj 0 0.19 0 0.18 0
 M Model_Texture/ArcadeDireito/ArcardeDireito.obj 0.62 -0.113 -0.5 0.57 45
 M Model_Texture/ArcadeDireito/ArcardeDireito.obj -0.62 -0.113 -0.5 0.57 -45
