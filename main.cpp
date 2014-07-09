@@ -32,58 +32,27 @@ void (*keyboardFunction)();
 
 int main(int argc, char* argv[])
 {
-  // string fileName = "/home/luciano/Documents/UnB/ICG/repositorios/shader/Model_Texture/TexturaArcadeEsquedo/Right_Side_Image.jpg";
-  // string fileName = "./Right_Side_Image.jpg";
-  // int imageID, imageWidth, imageHeight;
-  // unsigned char* imageData;
-
-  // ILuint id;
-
-  // cout << "- 1 -" << endl;
-
-  // ilGenImages(1,&id); 
-  // cout << "- 2 -" << endl;
-  // ilBindImage(id);
-  // cout << "- 3 -" << endl;
-
-  // imageID = ilLoadImage(fileName.c_str());
-  // cout << "- 4 -" << endl;
-  // if(imageID == 0)
-  // {
-  //   ilDeleteImages(1,&id);
-  //   cout << "Error to load image: " << fileName << endl;
-  //   cout << "Error Message: " << ilGetError() << endl;
-  // }
-  // else
-  // {
-  //   imageWidth = ilGetInteger(IL_IMAGE_WIDTH);
-  //   imageHeight = ilGetInteger(IL_IMAGE_HEIGHT);
-  //   imageData = ilGetData();
-    
-  //   cout << endl << "+----------------------------------+" << endl;
-  //   cout << "fileName: " << fileName << endl;
-  //   cout << "imageID: " << imageID << endl;
-  //   cout << "imageWidth: " << imageWidth << endl;
-  //   cout << "imageHeight: " << imageHeight << endl;
-  //   cout << "imageData: " << imageData << endl;
-  // }
-
-  // glutInit(&argc, argv);
-  // glutInitContextVersion(3, 1);
-  // glutInitContextProfile (GLUT_CORE_PROFILE );
-  // glewExperimental = GL_TRUE;
-  // glewInit();
-
-  // if (glewIsSupported("GL_VERSION_1_0"))
-  //   printf("Ready for OpenGL 1.0\n");
-  // else {
-  //   printf("OpenGL 1.0 not supported\n");
-  //   return(1);
-  // }
 
   GerenciadorGrafico gerenciador;
 
   Mesh *mesh;
+
+  char lineType;
+  string fileName;
+  while(cin >> lineType)
+  {
+    if(lineType == 'M')
+    {
+      cin >> fileName;
+      mesh = new Mesh();
+      mesh->carregarArquivo(fileName);
+      mesh->prepareAllTexture();
+      mesh->redimensionar();
+      mesh->transladar();
+
+      vectorMesh.push_back(mesh);
+    }
+  }
 
   for(int i = 1; i < argc; i++)
   {

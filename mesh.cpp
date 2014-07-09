@@ -144,20 +144,42 @@ Mesh::carregarArquivo(string nomeArquivo)
       stream >> trash;
       for(int i = 0; i < 3; i++)
       {
-        stream >> v >> c_trash >> n >> c_trash >> t;
-        this->vertexIndex.push_back(v-1);
-        this->normalIndex.push_back(n-1);
-        this->textureIndex.push_back(t-1);
+        if(!this->vertex.empty())
+        {
+          v = 1;
+          stream >> v;
+          this->vertexIndex.push_back(v-1);
+        }
+
+        stream >> c_trash;
+
+        if(!this->normal.empty())
+        {
+          n = 1;
+          stream >> n;
+          this->normalIndex.push_back(n-1);
+        }
+
+        stream >> c_trash;
+
+        if(!this->texture.empty())
+        {
+          t = 1;
+          stream >> t;
+          this->textureIndex.push_back(t-1);
+        }
       }
     }
   }
 
-  for(unsigned int i = 0; i < this->vertexIndex.size() / 3; i++)
-  {
-    cout << "f " << this->vertexIndex[(i * 2) + i + 0] << '/' << this->normalIndex[(i * 2) + i + 0] << '/' << this->textureIndex[(i * 2) + i + 0] << ' ';
-    cout << this->vertexIndex[(i * 2) + i + 1] << '/' << this->normalIndex[(i * 2) + i + 1] << '/' << this->textureIndex[(i * 2) + i + 1] << ' ';
-    cout << this->vertexIndex[(i * 2) + i + 2] << '/' << this->normalIndex[(i * 2) + i + 2] << '/' << this->textureIndex[(i * 2) + i + 2] << ' ' << endl;
-  }
+  // cout << this->vertexIndex.size() << endl;
+
+  // for(unsigned int i = 0; i < this->vertexIndex.size() / 3; i++)
+  // {
+  //   cout << "f " << this->vertexIndex[(i * 2) + i + 0] << '/' << this->normalIndex[(i * 2) + i + 0] << '/' << this->textureIndex[(i * 2) + i + 0] << ' ';
+  //   cout << this->vertexIndex[(i * 2) + i + 1] << '/' << this->normalIndex[(i * 2) + i + 1] << '/' << this->textureIndex[(i * 2) + i + 1] << ' ';
+  //   cout << this->vertexIndex[(i * 2) + i + 2] << '/' << this->normalIndex[(i * 2) + i + 2] << '/' << this->textureIndex[(i * 2) + i + 2] << ' ' << endl;
+  // }
 
   // for(unsigned int i = 0; i < this->vertexIndex.size(); i += 3)
   // {
@@ -165,7 +187,6 @@ Mesh::carregarArquivo(string nomeArquivo)
   //   cout << this->vertexIndex[i+1] << '/' << this->normalIndex[i+1] << '/' << this->textureIndex[i+1] << ' ';
   //   cout << this->vertexIndex[i+2] << '/' << this->normalIndex[i+2] << '/' << this->textureIndex[i+2] << ' ' << endl;
   // }
-  // cout << this->vertexIndex.size() << endl;
 
   arquivo.close();
 
@@ -290,12 +311,11 @@ Mesh::carregarMaterial(string nomeArquivo)
         this->material.back().imageHeight = ilGetInteger(IL_IMAGE_HEIGHT);
         this->material.back().imageData = ilGetData();
 
-        cout << endl << "+----------------------------------+" << endl;
-        cout << "material.back().fileName: " << this->material.back().fileName << endl;
-        cout << "material.back().imageID: " << this->material.back().imageID << endl;
-        cout << "material.back().imageWidth: " << this->material.back().imageWidth << endl;
-        cout << "material.back().imageHeight: " << this->material.back().imageHeight << endl;
-        // cout << "material.back().imageData: " << this->material.back().imageData << endl;
+        // cout << endl << "+----------------------------------+" << endl;
+        // cout << "material.back().fileName: " << this->material.back().fileName << endl;
+        // cout << "material.back().imageID: " << this->material.back().imageID << endl;
+        // cout << "material.back().imageWidth: " << this->material.back().imageWidth << endl;
+        // cout << "material.back().imageHeight: " << this->material.back().imageHeight << endl;
       }
     }
 
