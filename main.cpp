@@ -6,8 +6,12 @@
 const float VELOCITY_MOVE = 0.05;
 const float VELOCITY_ANGLE = 5;
 
+void printInstructions();
+
 int main(int argc, char* argv[])
 {
+
+  printInstructions();
 
   GerenciadorGrafico gerenciador;
 
@@ -217,3 +221,49 @@ int main(int argc, char* argv[])
   return 0;
 }
 
+void printInstructions()
+{
+  cout << endl;
+  cout << "+INSTRUCOES+" << endl;
+  cout << endl;
+
+  cout << "+---------------GERAL---------------+" << endl;
+  cout << "| 1 - Movimentacao da CAMERA" << endl;
+  cout << "| 2 - Movimentacao dos OBJETOS" << endl;
+  cout << "+-----------------------------------+" << endl;
+  cout << endl;
+
+  cout << "+--------------CAMERA--------------+" << endl;
+  cout << "+-----Movimentacao:" << endl;
+  cout << "| UP - Andar para frente" << endl;
+  cout << "| DOWN - Andar para tras" << endl;
+  cout << "| RIGHT - Girar para direita" << endl;
+  cout << "| LEFT - Girar para esquerda" << endl;
+  cout << "+----------------------------------+" << endl;
+  cout << endl;
+
+  cout << "+--------------OBJETOS--------------+" << endl;
+  cout << "+-----Movimentacao:" << endl;
+  cout << "| UP - Mover no eixo Y +" << endl;
+  cout << "| DOWN - Mover no eixo Y -" << endl;
+  cout << "| RIGHT - Mover no eixo X +" << endl;
+  cout << "| LEFT - Mover no eixo Y -" << endl;
+  cout << "| M - Mover no eixo Z +" << endl;
+  cout << "| N - Mover no eixo Z -" << endl;
+  cout << "+-----:" << endl;
+
+  cout << "+-----Rotacao:" << endl;
+  cout << "| W - Rotacionao no eixo X +" << endl;
+  cout << "| S - Rotacionao no eixo X -" << endl;
+  cout << "| D - Rotacionao no eixo Y +" << endl;
+  cout << "| A - Rotacionao no eixo Y -" << endl;
+  cout << "| E - Rotacionao no eixo Z +" << endl;
+  cout << "| Q - Rotacionao no eixo Z -" << endl;
+  cout << "+-----:" << endl;
+
+  cout << "+-----Selecionar Objeto:" << endl;
+  cout << "| C - Seleciona o proximo objeto" << endl;
+  cout << "| X - Seleciona o objeto anterior" << endl;
+  cout << "+-----:" << endl;
+  cout << endl; 
+}
