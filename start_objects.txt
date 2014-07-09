@@ -1,5 +1,5 @@
-M Model_Texture/Bola/Bola.obj
-M Model_Texture/Chao/Chao.obj
-M Model_Texture/ParedeLabirinto/ParedeLabirinto.obj
-M Model_Texture/Tapete/Tapete.obj
-M Model_Texture/TexturaArcadeEsquedo/ArcardeDireito.obj
+M 0 0 0 Model_Texture/Bola/Bola.obj
+M 0 0 0 Model_Texture/Chao/Chao.obj
+M 0 0 0 Model_Texture/ParedeLabirinto/ParedeLabirinto.obj
+M 0 0 0 Model_Texture/Tapete/Tapete.obj
+M 0 0 0 Model_Texture/TexturaArcadeEsquedo/ArcardeDireito.obj

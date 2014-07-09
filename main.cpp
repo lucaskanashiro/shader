@@ -39,16 +39,19 @@ int main(int argc, char* argv[])
 
   char lineType;
   string fileName;
+  float x, y, z;
   while(cin >> lineType)
   {
     if(lineType == 'M')
     {
+      cin >> x >> y >> z;
       cin >> fileName;
       mesh = new Mesh();
       mesh->carregarArquivo(fileName);
       mesh->prepareAllTexture();
       mesh->redimensionar();
-      mesh->transladar();
+      mesh->setPosition(x, y, z);
+      // mesh->transladar();
 
       vectorMesh.push_back(mesh);
     }

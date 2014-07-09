@@ -611,6 +611,26 @@ Mesh::rotateZ(float angleZ)
 }
 
 void
+Mesh::setPosition(float x, float y, float z)
+{
+  Vertex midPoint, newPoint;
+  Vertex vector3d;
+
+  midPoint = getMidPoint();
+  newPoint = Vertex(x, y, z);
+  vector3d.position[0] = newPoint.position[0] - midPoint.position[0];
+  vector3d.position[1] = newPoint.position[1] - midPoint.position[1];
+  vector3d.position[2] = newPoint.position[2] - midPoint.position[2];
+
+  for(unsigned int i = 0; i < this->vertex.size(); i++)
+  {
+    vertex[i].position[0] += vector3d.position[0];
+    vertex[i].position[1] += vector3d.position[1];
+    vertex[i].position[2] += vector3d.position[2];
+  }
+}
+
+void
 Mesh::incPosition(float x, float y, float z)
 {
   float minX, minY, minZ;

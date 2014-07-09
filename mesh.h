@@ -48,7 +48,8 @@ class Mesh
     void rotateX(float angleX);
     void rotateZ(float angleZ);
 
-    void incPosition(float x, float y, float z);
+    void setPosition(float x = 0, float y = 0, float z = 0);
+    void incPosition(float x = 0, float y = 0, float z = 0);
 
     void prepareAllTexture();
 
