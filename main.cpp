@@ -30,46 +30,39 @@ inline void moveCamera();
 inline void moveObjects();
 void (*keyboardFunction)();
 
-int main(int argc, char* argv[])
+int main()
 {
 
-  GerenciadorGrafico gerenciador;
+  GerenciadorGrafico gerenciador(1024, 720);
 
   Mesh *mesh;
 
   char lineType;
   string fileName;
   float x, y, z;
+  float scaleResize;
   while(cin >> lineType)
   {
     if(lineType == 'M')
     {
-      cin >> x >> y >> z;
       cin >> fileName;
+      cin >> x >> y >> z;
+      cin >> scaleResize;
+
       mesh = new Mesh();
       mesh->carregarArquivo(fileName);
       mesh->prepareAllTexture();
       mesh->redimensionar();
+
+      mesh->resize(scaleResize / mesh->getDeltaY());
       mesh->setPosition(x, y, z);
       // mesh->transladar();
 
       vectorMesh.push_back(mesh);
     }
-  }
+  }  
 
-  for(int i = 1; i < argc; i++)
-  {
-    mesh = new Mesh();
-    mesh->carregarArquivo(argv[i]);
-    mesh->prepareAllTexture();
-    mesh->redimensionar();
-    mesh->transladar();
-
-    vectorMesh.push_back(mesh);
-  }
-  
-
-  gerenciador.setViewPort(800, 600);
+  gerenciador.setViewPort(1024, 720);
   gerenciador.iniciarRender();
 
   glewInit();
@@ -255,6 +248,15 @@ inline void moveCamera()
 
 inline void moveObjects()
 {
+  if(sdlEvent.key.keysym.sym == SDLK_p)
+  {
+    if(sdlEvent.key.state == SDL_PRESSED)
+    {
+      vectorMesh[indice]->showPosition();
+      vectorMesh[indice]->showDimensions();
+    }
+  }
+
   if(sdlEvent.key.keysym.sym == SDLK_c)
   {
     if(sdlEvent.key.state == SDL_PRESSED)

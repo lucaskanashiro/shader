@@ -51,7 +51,14 @@ class Mesh
     void setPosition(float x = 0, float y = 0, float z = 0);
     void incPosition(float x = 0, float y = 0, float z = 0);
 
+    float getDeltaX();
+    float getDeltaY();
+    float getDeltaZ();
+
     void prepareAllTexture();
+
+    void showPosition();
+    void showDimensions();
 
   private:
 

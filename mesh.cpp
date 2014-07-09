@@ -624,9 +624,9 @@ Mesh::setPosition(float x, float y, float z)
 
   for(unsigned int i = 0; i < this->vertex.size(); i++)
   {
-    vertex[i].position[0] += vector3d.position[0];
-    vertex[i].position[1] += vector3d.position[1];
-    vertex[i].position[2] += vector3d.position[2];
+    this->vertex[i].position[0] += vector3d.position[0];
+    this->vertex[i].position[1] += vector3d.position[1];
+    this->vertex[i].position[2] += vector3d.position[2];
   }
 }
 
@@ -797,4 +797,41 @@ Mesh::getMidPoint()
 
   return midPoint;
 
+}
+
+float
+Mesh::getDeltaX()
+{
+  return deltaX;
+}
+
+float
+Mesh::getDeltaY()
+{
+  return deltaY;
+}
+
+float
+Mesh::getDeltaZ()
+{
+  return deltaZ;
+}
+
+void
+Mesh::showPosition()
+{
+  Vertex midPoint = getMidPoint();
+  cout << endl << "+----------showPosition----------+" << endl;
+  cout << "midX: " << midPoint.position[0] << endl;
+  cout << "midY: " << midPoint.position[1] << endl;
+  cout << "midZ: " << midPoint.position[2] << endl;
+}
+
+void
+Mesh::showDimensions()
+{
+  cout << endl << "+----------showDimensions----------+" << endl;
+  cout << "deltaX: " << this->deltaX << endl;
+  cout << "deltaY: " << this->deltaY << endl;
+  cout << "deltaZ: " << this->deltaZ << endl;
 }
