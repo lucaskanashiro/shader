@@ -1,7 +1,7 @@
+M Model_Texture/TexturaArcadeEsquedo/ArcardeDireito.obj 0.65 -0.113 -0.5 0.57
 M Model_Texture/ParedeLabirinto/ParedeLabirinto.obj -0.5 -0.059 -0.79 0.68
 M Model_Texture/ParedeLabirinto/ParedeLabirinto.obj 0.0 -0.059 -0.79 0.68
 M Model_Texture/ParedeLabirinto/ParedeLabirinto.obj 0.5 -0.059 -0.79 0.68
 M Model_Texture/Bola/Bola.obj 1.5 -0.9 0 1
 M Model_Texture/Chao/Chao.obj 0 0 0 0.8
 M Model_Texture/Tapete/Tapete.obj 0 0 0 1
-M Model_Texture/TexturaArcadeEsquedo/ArcardeDireito.obj -0.56 0 0.47 0.57
