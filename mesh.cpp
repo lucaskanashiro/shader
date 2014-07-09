@@ -554,6 +554,7 @@ Mesh::rotateY(float angleY)
   float radAngleY = angleY*pi/180.0;
   vector<Vertex> b = this->vertex;
   vector<Vertex> c = this->vertex;
+  this->angleY += angleY;
 
   Vertex midPoint = getMidPoint();
   float midX = midPoint.position[0];
@@ -579,6 +580,7 @@ Mesh::rotateX(float angleX)
   Vertex midPoint = getMidPoint();
   float midY = midPoint.position[1];
   float midZ = midPoint.position[2];
+  this->angleX += angleX;
 
   for(unsigned int i = 0; i < a.size(); i++)
   {
@@ -596,6 +598,7 @@ Mesh::rotateZ(float angleZ)
   float radAngleZ = angleZ*pi/180.0;
   vector<Vertex> c = this->vertex;
   vector<Vertex> d = this->vertex;
+  this->angleZ += angleZ;
 
   Vertex midPoint = getMidPoint();
   float midX = midPoint.position[0];
@@ -834,4 +837,13 @@ Mesh::showDimensions()
   cout << "deltaX: " << this->deltaX << endl;
   cout << "deltaY: " << this->deltaY << endl;
   cout << "deltaZ: " << this->deltaZ << endl;
+}
+
+void
+Mesh::showAngles()
+{
+  cout << endl << "+----------showAngles----------+" << endl;
+  cout << "angleX: " << this->angleX << endl;
+  cout << "angleY: " << this->angleY << endl;
+  cout << "angleZ: " << this->angleZ << endl;
 }

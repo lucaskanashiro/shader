@@ -59,6 +59,7 @@ class Mesh
 
     void showPosition();
     void showDimensions();
+    void showAngles();
 
   private:
 

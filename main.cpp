@@ -41,6 +41,7 @@ int main()
   string fileName;
   float x, y, z;
   float scaleResize;
+  float angleY;
   while(cin >> lineType)
   {
     if(lineType == 'M')
@@ -48,6 +49,7 @@ int main()
       cin >> fileName;
       cin >> x >> y >> z;
       cin >> scaleResize;
+      cin >> angleY;
 
       mesh = new Mesh();
       mesh->carregarArquivo(fileName);
@@ -56,6 +58,7 @@ int main()
 
       mesh->resize(scaleResize / mesh->getDeltaY());
       mesh->setPosition(x, y, z);
+      mesh->rotateY(angleY);
       // mesh->transladar();
 
       vectorMesh.push_back(mesh);
@@ -254,6 +257,7 @@ inline void moveObjects()
     {
       vectorMesh[indice]->showPosition();
       vectorMesh[indice]->showDimensions();
+      vectorMesh[indice]->showAngles();
     }
   }
 
