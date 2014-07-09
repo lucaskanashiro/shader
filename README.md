@@ -1,4 +1,9 @@
-shader
-======
+Introdução a Computação Gráfica
+===============================
 
-Exercise 05 - Introduction to Graphics Computer
+Projeto - Interactive Maze
+
+Luciano Prestes
+Lucas Kanashiro
+Macartur de Sousa
+Ruyther Costa
