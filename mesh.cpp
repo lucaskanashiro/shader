@@ -215,11 +215,7 @@ Mesh::carregarMaterial(string nomeArquivo)
 
   // float x, y, z;
 
-  cout << "1 --" << endl;
-
   this->material = vector<Material>();
-
-  cout << "2 --" << endl;
 
   while(getline(arquivo, line))
   {
@@ -321,10 +317,7 @@ Mesh::carregarMaterial(string nomeArquivo)
 
   }
 
-  cout << "3 --" << endl;
-
   arquivo.close();
-  cout << "arquivo.close()" << endl;
 
   this->deltaX = this->encontrarDeltaX();
   this->deltaY = this->encontrarDeltaY();
